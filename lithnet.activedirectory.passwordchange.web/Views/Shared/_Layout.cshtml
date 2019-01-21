@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Lithnet AD Password Change</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="header">
+            <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
+            <h1 class="title">@ConfigurationManager.AppSettings["app:Title"]</h1>
+        </div>
+    </header>
+
+    <div class="content">
+        @RenderSection("Instructions", required: false)
+        @RenderBody()
+    </div>
+
+    @RenderSection("Navigation", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="@Url.Content("~/Scripts/pwvalidation.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
