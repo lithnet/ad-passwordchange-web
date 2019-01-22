@@ -19,7 +19,8 @@ namespace lithnet.activedirectory.passwordchange.web
         BannedNormalizedPassword = 9,
         BannedNormalizedWord = 10,
         PasswordWasBlank = 11,
-        AlreadyPwned = 50,
+        PasswordIsPwned = 50,
+        PwnedGeneralError = 51,
         FilterError = 100
     }
 }

@@ -126,6 +126,9 @@
   <data name="HeadingChangePassword" xml:space="preserve">
     <value>Password Change Request</value>
   </data>
+  <data name="HeadingInstructions" xml:space="preserve">
+    <value>Password Requirements</value>
+  </data>
   <data name="NewDetails" xml:space="preserve">
     <value>Select a new password</value>
   </data>

@@ -65,7 +65,11 @@ header::after {
     display: none;
 }
 
+/* User Instructions */
 
+.instructions {
+
+}
 
 .form-container {
     background-color: #fefbfb;

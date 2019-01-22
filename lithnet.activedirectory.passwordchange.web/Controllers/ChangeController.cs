@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Security.Cryptography;
 using lithnet.activedirectory.passwordchange.web.Models;
 using System.Net;
+using lithnet.activedirectory.passwordchange.web.Exceptions;
 
 namespace lithnet.activedirectory.passwordchange.web.Controllers
 {
@@ -60,34 +61,20 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
             try
             {
-                if (ConfigurationManager.AppSettings["HIBPEnabled"] == "true")
+                PasswordTestResult result = this.passwordManager.TestPassword(model.UserName, model.NewPassword);
+
+                if (!result.Passed())
                 {
-                    try
-                    {
-                        int pwnCount = CheckPasswordHIBP(model.NewPassword);
-
-                        if (pwnCount > 0)
-                        {
-                            model.SecurityAlert = String.Format(Resources.UIMessages.PasswordPwned, pwnCount);
-                            return this.View(model);
-                        }
-
-                        // Todo: Log that password is good
-                    }
-                    catch (Exception)
-                    {
-                        if (ConfigurationManager.AppSettings["HIBPAllowPasswordChangeOnError"] != "true")
-                        {
-                            model.FailureReason = Resources.UIMessages.HaveIBeenPwnedGeneralError;
-                            return this.View(model);
-                        }
-
-                        // Todo: Log the exception
-                    }
-
+                    model.FailureReason = result.GetErrorMessage();
+                    return this.View(model);
+                    
                 }
-                
-                ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword);
+
+                model.SecurityAlert = result.GetWarningMessage();
+
+                this.passwordManager.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword);
+
+                return this.View(model);
             }
             catch (NotFoundException)
             {
@@ -110,8 +97,6 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
                 return this.View(model);
             }
 
-            return this.View();
-
         }
 
         public ActionResult Redirect(PasswordChangeRequestModel model)
@@ -128,80 +113,8 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
                 return new RedirectResult(model.Redirect);
             }
             
-            return RedirectToAction("New");
+            return RedirectToAction("Do");
         }
 
-        private int CheckPasswordHIBP(string newPassword)
-        {
-            // Hash the supplied password using SHA1
-            var hasher = SHA1.Create();
-            byte[] hashedPasswordBytes = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(newPassword));
-            string hashedPasswordString = hashedPasswordBytes.ToHexString();
-            string hashedPasswordPrefix = hashedPasswordString.Substring(0, 5);
-            string hashedPasswordRemainder = hashedPasswordString.Substring(5);
-
-            // Send the first five characters of the hash to the HaveIBeenPwned API
-            string apiUrl = $"https://api.pwnedpasswords.com/range/{hashedPasswordPrefix}";
-
-            WebClient client = new WebClient();
-            string response = client.DownloadString(apiUrl);
-            
-            foreach (string line in response.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None))
-            {
-                string[] result = line.Split(':');
-                if (result.Length != 2) {
-                    continue;
-                }
-                if (result[0] == hashedPasswordRemainder)
-                {
-                    return int.Parse(result[1]);
-                }
-            }
-
-            return 0;
-        }
-
-        public static void ChangePassword(string username, string oldPassword, string newPassword)
-        {
-            using (PrincipalContext context = new PrincipalContext(ContextType.Machine))
-            {
-                username = GetSamAccountNameFromSamAccountNameOrEmail(username);
-
-                using (UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, username))
-                {
-                    if (user == null)
-                    {
-                        throw new NotFoundException();
-                    }
-
-                    try
-                    {
-                        user.ChangePassword(oldPassword, newPassword);
-                    }
-                    catch (System.DirectoryServices.AccountManagement.PasswordException ex)
-                    {
-                        COMException inner = ex.InnerException as COMException;
-                        if (inner != null)
-                        {
-                            if (inner.ErrorCode == (unchecked((int)0x80070056)))
-                            {
-                                throw new PasswordIncorrectException(ex.Message);
-                            }
-                            else if (inner.ErrorCode == (unchecked((int)0x800708C5)))
-                            {
-                                throw new PasswordDoesNotMeetPolicyException(ex.Message);
-                            }
-                        }
-
-                        throw;
-                    }
-                }
-            }
-        }
-
-        private static string GetSamAccountNameFromSamAccountNameOrEmail(string username)
-        {
-            return username;
-        }
     }
 }

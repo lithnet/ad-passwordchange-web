@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password Requirements.
+        /// </summary>
+        public static string HeadingInstructions {
+            get {
+                return ResourceManager.GetString("HeadingInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a new password.
         /// </summary>
         public static string NewDetails {

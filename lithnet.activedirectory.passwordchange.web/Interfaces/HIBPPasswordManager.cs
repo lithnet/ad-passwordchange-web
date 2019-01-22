@@ -1,6 +1,7 @@
 ﻿using lithnet.activedirectory.passwordchange.web.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
@@ -50,12 +51,44 @@ namespace lithnet.activedirectory.passwordchange.web
             }
         }
 
-        public int TestPartialPassword(string username, string password)
+        public PasswordTestResult TestPartialPassword(string username, string password)
         {
             throw new NotImplementedException();
         }
 
-        public int TestPassword(string username, string password)
+        public PasswordTestResult TestPassword(string username, string password)
+        {
+            try
+            {
+                int pwnCount = getPwnCount(password);
+
+                if (pwnCount > 0)
+                {
+                    // Password has been pwned, so return error code
+                    return new PasswordTestResult(
+                        PasswordTestResultCode.PasswordIsPwned,
+                        String.Format(Resources.UIMessages.PasswordPwned, pwnCount)
+                        );
+                }
+
+                // Otherwise, return successful test result
+                return new PasswordTestResult();
+
+                // Todo: Log that password is good
+            }
+            catch (Exception)
+            {
+                return new PasswordTestResult(
+                    PasswordTestResultCode.PwnedGeneralError,
+                    Resources.UIMessages.HaveIBeenPwnedGeneralError
+                    );
+
+                // Todo: Log the exception
+            }
+
+        }
+
+        private int getPwnCount(string password)
         {
             // Hash the supplied password using SHA1
             var hasher = SHA1.Create();

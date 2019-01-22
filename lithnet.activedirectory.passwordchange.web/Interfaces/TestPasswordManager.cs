@@ -8,14 +8,14 @@ namespace lithnet.activedirectory.passwordchange.web
             
         }
 
-        public int TestPartialPassword(string username, string password, out string reason)
+        public PasswordTestResult TestPartialPassword(string username, string password)
         {
-            return 0;
+            return new PasswordTestResult();
         }
 
-        public int TestPassword(string username, string password, out string reason)
+        public PasswordTestResult TestPassword(string username, string password)
         {
-            return 0;
+            return new PasswordTestResult();
         }
     }
 }
