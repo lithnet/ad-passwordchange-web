@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Lithnet AD Password Change</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/fontawesome")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
+    @RenderSection("Navigation", required: false)
+
     <header>
         <div class="header">
             <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
@@ -19,8 +23,6 @@
         @RenderSection("Instructions", required: false)
         @RenderBody()
     </div>
-
-    @RenderSection("Navigation", required: false)
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

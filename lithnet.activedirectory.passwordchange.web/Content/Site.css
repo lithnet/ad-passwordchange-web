@@ -73,7 +73,7 @@ header::after {
 
 .form-container {
     background-color: #fefbfb;
-    border: 1px solid #dcdcdc;
+    /*border: 1px solid #dcdcdc;*/
     position: relative;
 }
 

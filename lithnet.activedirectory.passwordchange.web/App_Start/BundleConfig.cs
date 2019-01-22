@@ -22,9 +22,12 @@ namespace lithnet.activedirectory.passwordchange.web
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new StyleBundle("~/bundles/fontawesome").Include(
+                      "~/Content/fontawesome/all.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/css/bootstrap.css",
+                      "~/Content/css/site.css"));
         }
     }
 }
