@@ -1,47 +1,42 @@
 ﻿$(document).ready(function () {
 
-    $('#new-password-input').keyup(function () {
+    $('#new-password-input').keyup(throttle(function () {
         var pswd = $(this).val();
+        $('#password-test-info').html('');
+        $.ajax({
+            url: '/Check/Password',
+            data: JSON.stringify({
+                username: $('#user-name').val(),
+                newPassword: pswd
+            }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.valid == true) {
+                    $('#password-test-info').text('Strength: Excellent');
+                } else if (data.valid == false) {
+                    $('#password-test-info').text(data.details);
+                }
+                
+            },
+            error: function () {
+                $('#password-test-info').text('Error checking password');
+            }
+        });
 
-        //validate the length
-        if (pswd.length < 8) {
-            $('#validator-length').removeClass('valid').addClass('invalid');
-        } else {
-            $('#validator-length').removeClass('invalid').addClass('valid');
-        }
-
-        //validate letter
-        if (pswd.match(/[A-z]/)) {
-            $('#validator-letter').removeClass('invalid').addClass('valid');
-        } else {
-            $('#validator-letter').removeClass('valid').addClass('invalid');
-        }
-
-        //validate capital letter
-        if (pswd.match(/[A-Z]/)) {
-            $('#validator-capital').removeClass('invalid').addClass('valid');
-        } else {
-            $('#validator-capital').removeClass('valid').addClass('invalid');
-        }
-
-        //validate number
-        if (pswd.match(/\d/)) {
-            $('#validator-number').removeClass('invalid').addClass('valid');
-        } else {
-            $('#validator-number').removeClass('valid').addClass('invalid');
-        }
-
-        //validate space
-        if (pswd.match(/[^a-zA-Z0-9\-\/]/)) {
-            $('#validator-space').removeClass('invalid').addClass('valid');
-        } else {
-            $('#validator-space').removeClass('valid').addClass('invalid');
-        }
-
-    }).focus(function () {
-        $('#password-helpinfo').show();
-    }).blur(function () {
-        $('#password-helpinfo').hide();
-    });
+        
+    }));
 
 });
+
+function throttle(f, delay) {
+    var timer = null;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = window.setTimeout(function () {
+            f.apply(context, args);
+        },
+            delay || 1000);
+    };
+}

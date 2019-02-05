@@ -1,0 +1,215 @@
+﻿@font-face {
+    font-family: Inconsolata;
+    src: url('../webfonts/Inconsolata-Regular.ttf');
+}
+
+body {
+    color: #666;
+    /*font-family: "Open Sans",Arial,Helvetica,sans-serif;*/
+    font-size: 13px;
+}
+
+/* Page-Wide Settings */
+
+.content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    align-items: center;
+    position: relative;
+    top: 0;
+}
+
+/* Header Styles */
+
+header {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    color: #242424;
+    padding: 0;
+    margin: 0;
+}
+
+.header {
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.title {
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+.logo {
+    display: block;
+    width: 200px;
+    height: 41px;
+    padding: 0;
+    margin: 0 auto;
+    background: url(../images/logo.png) no-repeat 0 0;
+    background-size: cover;
+}
+
+.logo span {
+    display: none;
+}
+
+/* User Instructions */
+
+.instructions {
+
+}
+
+.instructions-header {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
+    position: relative;
+}
+
+.instructions-content {
+    display: block;
+    padding: 10px 14px 5px;
+    border: none;
+    background: rgba(251,255,251,.9);
+    position: relative;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    font-style: italic;
+}
+
+/* Password hints */
+#password-test-info {
+    display: inline;
+}
+
+/* Action buttons */
+#action-buttons {
+    text-align: center;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    padding: 5px 0;
+    background: rgba(252,252,252,.9);
+}
+
+/* Further Notes footer */
+.notes {
+    margin-top: 20px;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.notes-header {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
+    position: relative;
+}
+
+.notes-content {
+    display: block;
+    padding: 10px 14px 5px;
+    border: none;
+    background: rgba(255,255,255,.9);
+    position: relative;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    font-style: italic;
+}
+
+/* Form Styles */
+.content h5 {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 300;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
+    position: relative;
+    text-align: left;
+}
+
+.form-section {
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    padding-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 4px;
+}
+
+.password-field {
+    font-family: Inconsolata, Consolas, Courier New, Courier, monospace;
+}
+
+.field-alert {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+@media only screen and (min-width: 600px) {
+
+    .page {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .header {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    body {
+        font-size: 12px;
+    }
+
+}
+
+@media only screen and (max-device-width: 480px) {
+
+    body {
+        font-size: 10px;
+    }
+
+    .content {
+        margin-top: 0;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .content {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 750px) {
+    .content {
+        margin-top: 0;
+    }
+}

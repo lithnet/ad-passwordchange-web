@@ -117,46 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Banned" xml:space="preserve">
+    <value>This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts.</value>
+  </data>
+  <data name="BannedNormalizedPassword" xml:space="preserve">
+    <value>This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts.</value>
+  </data>
+  <data name="BannedNormalizedWord" xml:space="preserve">
+    <value>This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts.</value>
+  </data>
+  <data name="ChangeSuccessful" xml:space="preserve">
+    <value>Your password has been updated successfully!</value>
+  </data>
+  <data name="ComplexityPointsNotMet" xml:space="preserve">
+    <value>Your password did not meet the complexity requirements.</value>
+  </data>
+  <data name="ComplexityThresholdNotMet" xml:space="preserve">
+    <value>Your password did not meet the complexity requirements.</value>
+  </data>
   <data name="ConfirmNewPassword" xml:space="preserve">
-    <value>Confirm Password</value>
+    <value>Confirm New Password</value>
   </data>
   <data name="ConfirmPasswordIsRequired" xml:space="preserve">
-    <value>Enter the new password again</value>
+    <value>Password confirmation cannot be blank. Please enter your desired password twice to continue.</value>
+  </data>
+  <data name="ContainsAccountName" xml:space="preserve">
+    <value>Your password cannot contain your username.</value>
+  </data>
+  <data name="ContainsFullName" xml:space="preserve">
+    <value>Your password cannot contain any part of your name.</value>
   </data>
   <data name="CurrentPassword" xml:space="preserve">
-    <value>Password</value>
+    <value>Current Password</value>
   </data>
   <data name="CurrentPasswordIsRequired" xml:space="preserve">
-    <value>Please enter your current password</value>
+    <value>Existing password cannot be blank. Please enter your current password to continue.</value>
   </data>
-  <data name="HaveIBeenPwnedGeneralError" xml:space="preserve">
-    <value>Unable to validate whether your password has been compromised</value>
+  <data name="DidNotMatchApprovalRegex" xml:space="preserve">
+    <value>Your password was explicitly rejected according to the complexity requirements.</value>
+  </data>
+  <data name="FilterError" xml:space="preserve">
+    <value>Something went wrong internally. Please contact your system administration team to report this issue.</value>
+  </data>
+  <data name="GeneralError" xml:space="preserve">
+    <value>Something went wrong attempting to validate your password against the system rules. Please contact your system administration team to report this issue.</value>
   </data>
   <data name="InvalidUserOrPassword" xml:space="preserve">
-    <value>Invalid Username or Password</value>
+    <value>Unable to validate your existing credentials. Have you entered your current username and password correctly?</value>
+  </data>
+  <data name="LengthRequirementsNotMet" xml:space="preserve">
+    <value>Your password is not long enough.</value>
+  </data>
+  <data name="MatchedRejectRegex" xml:space="preserve">
+    <value>Your password was explicitly rejected according to the complexity requirements.</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
     <value>New Password</value>
   </data>
   <data name="NewPasswordIsRequired" xml:space="preserve">
-    <value>Please enter your new password which conforms to the rules</value>
+    <value>A new password must be entered twice to continue.</value>
   </data>
   <data name="PasswordDoesNotMeetPolicy" xml:space="preserve">
-    <value>Your password is a bit shit</value>
+    <value>That password does not meet our complexity requirements. Please review the instructions above and choose a slightly more difficult password to continue.</value>
+  </data>
+  <data name="PasswordIsPwned" xml:space="preserve">
+    <value>According to HaveIBeenPwned, that password has been compromised {0} times. Please choose a different password to continue.</value>
   </data>
   <data name="PasswordPwned" xml:space="preserve">
-    <value>Your password has been PWNED {0} times! Panic at the Disco!</value>
+    <value>According to HaveIBeenPwned, that password has been compromised {0} times. Please choose a different password to continue.</value>
   </data>
   <data name="PasswordsDoNotMatch" xml:space="preserve">
-    <value>You must enter the new password twice to confirm. These two passwords do not match.</value>
+    <value>The confirmation password did not match the new password entered. Please enter your desired password twice to continue.</value>
+  </data>
+  <data name="PasswordWasBlank" xml:space="preserve">
+    <value>Your password cannot be blank.</value>
+  </data>
+  <data name="ResultApproved" xml:space="preserve">
+    <value />
   </data>
   <data name="UnhandledError" xml:space="preserve">
-    <value>Something went wrong attempting to validate your details</value>
+    <value>Something went wrong attempting to validate your details. Please contact your system administration team to report this issue.</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Username</value>
   </data>
   <data name="UserNameIsRequired" xml:space="preserve">
-    <value>Please enter your user name to continue</value>
+    <value>Username cannot be blank. Please enter your account login to continue.</value>
   </data>
 </root>

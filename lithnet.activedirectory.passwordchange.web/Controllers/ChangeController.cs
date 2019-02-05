@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.DirectoryServices.AccountManagement;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web;
 using System.Web.Mvc;
-using System.Security.Cryptography;
 using lithnet.activedirectory.passwordchange.web.Models;
-using System.Net;
+using System.Threading.Tasks;
 using lithnet.activedirectory.passwordchange.web.Exceptions;
 
 namespace lithnet.activedirectory.passwordchange.web.Controllers
@@ -38,7 +31,7 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(pageModel);
             }
 
             return this.View(pageModel);
@@ -46,35 +39,33 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Do(PasswordChangeRequestModel model)
+        public async Task<ActionResult> Do(PasswordChangeRequestModel model)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.View();
+                return View(model);
             }
 
             if (model.NewPassword != model.ConfirmNewPassword)
             {
                 model.FailureReason = Resources.UIMessages.PasswordsDoNotMatch;
-                return this.View(model);
+                return View(model);
             }
 
             try
             {
-                PasswordTestResult result = this.passwordManager.TestPassword(model.UserName, model.NewPassword);
+                PasswordTestResult result = await this.passwordManager.TestPassword(model.UserName, model.NewPassword).ConfigureAwait(false);
 
-                if (!result.Passed())
+                if (result.Code != PasswordTestResultCode.Approved)
                 {
-                    model.FailureReason = result.GetErrorMessage();
-                    return this.View(model);
-                    
+                    model.FailureReason = result.ToString();
+                    return View(model);
                 }
 
-                model.SecurityAlert = result.GetWarningMessage();
+                await ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
 
-                this.passwordManager.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword);
-
-                return this.View(model);
+                model.Success = true;
+                return this.View("Success", model);
             }
             catch (NotFoundException)
             {
@@ -99,21 +90,26 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
         }
 
-        public ActionResult Redirect(PasswordChangeRequestModel model)
+        public async Task<ActionResult> Success(PasswordChangeRequestModel model)
         {
-            if (!String.IsNullOrEmpty(model.Redirect))
+            if (!model.Success)
             {
+                return RedirectToAction("Do");
+            }
 
-                // If this doesn't look like a relative url, try to convert to http scheme
-                if (!model.Redirect.StartsWith("/") && !model.Redirect.Contains("://"))
-                {
-                    model.Redirect = "http://" + model.Redirect;
-                }
-
+            if (model.Redirect != null)
+            {
                 return new RedirectResult(model.Redirect);
             }
-            
-            return RedirectToAction("Do");
+
+            return this.View();
+        }
+
+        public async Task ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            var userPrincipal = await WindowsSamController.GetUserPrincipal(username);
+
+            await WindowsSamController.ChangeUserPassword(userPrincipal, oldPassword, newPassword);
         }
 
     }

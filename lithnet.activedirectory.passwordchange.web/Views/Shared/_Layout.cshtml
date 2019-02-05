@@ -10,23 +10,28 @@
 </head>
 <body>
 
-    @RenderSection("Navigation", required: false)
+    <div id="page">
 
-    <header>
-        <div class="header">
-            <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
-            <h1 class="title">@ConfigurationManager.AppSettings["app:Title"]</h1>
+        @RenderSection("Navigation", required: false)
+
+        <header>
+            <div class="header">
+                <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
+                <h1 class="title">@ConfigurationManager.AppSettings["app:Title"]</h1>
+            </div>
+        </header>
+
+        <div class="content">
+            @RenderSection("Instructions", required: false)
+            @RenderBody()
+            @RenderSection("FurtherNotes", required: false)
         </div>
-    </header>
 
-    <div class="content">
-        @RenderSection("Instructions", required: false)
-        @RenderBody()
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="@Url.Content("~/Scripts/pwvalidation.js")"></script>
+    <!--<script src="@Url.Content("~/Scripts/pwvalidation.js")"></script>-->
     @RenderSection("scripts", required: false)
 </body>
 </html>

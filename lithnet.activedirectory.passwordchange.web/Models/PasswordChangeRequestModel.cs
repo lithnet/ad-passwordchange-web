@@ -25,7 +25,7 @@ namespace lithnet.activedirectory.passwordchange.web.Models
 
         public string FailureReason { get; set; }
 
-        public string SecurityAlert { get; set; }
+        public bool Success { get; set; }
 
         public string Redirect { get; set; }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
 using Unity;
@@ -9,16 +10,26 @@ namespace lithnet.activedirectory.passwordchange.web
     {
         public static void RegisterComponents()
         {
-			var container = new UnityContainer();
+            var container = new UnityContainer();
+
+            List<IPasswordManager> EnabledPasswordServices = new List<IPasswordManager>();
 
             if (ConfigurationManager.AppSettings["HIBPEnabled"] == "true")
             {
-                container.RegisterType<IPasswordManager, HIBPPasswordManager>();
+                EnabledPasswordServices.Add(new HIBPPasswordManager());
             }
-            else
+            if (ConfigurationManager.AppSettings["LPPEnabled"] == "true")
             {
-                container.RegisterType<IPasswordManager, TestPasswordManager>();
+                EnabledPasswordServices.Add(new LppPasswordManager());
             }
+            if (ConfigurationManager.AppSettings["TestEnabled"] == "true")
+            {
+                EnabledPasswordServices.Add(new TestPasswordManager());
+            }
+
+            AggregatePasswordManager passwordManager = new AggregatePasswordManager(EnabledPasswordServices);
+
+            container.RegisterInstance<IPasswordManager>(passwordManager);
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
