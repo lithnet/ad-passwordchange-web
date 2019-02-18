@@ -15,7 +15,7 @@
         @RenderSection("Navigation", required: false)
 
         <header>
-            <div class="header">
+            <div class="header" role="banner">
                 <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
                 <h1 class="title">@ConfigurationManager.AppSettings["app:Title"]</h1>
             </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Password Change Page";
 }
 
 @model lithnet.activedirectory.passwordchange.web.Models.PasswordChangeRequestModel
@@ -7,7 +7,7 @@
 @section Instructions {
     @if (File.Exists(Server.MapPath("~/App_Data/Templates/instructions.html")))
     {
-        <section class="instructions">
+        <section class="instructions" aria-label="password instructions">
             <h5 class="instructions-header">@Resources.Do.HeadingInstructions</h5>
             <div class="instructions-content">
 
@@ -21,7 +21,7 @@
 @section FurtherNotes {
     @if (File.Exists(Server.MapPath("~/App_Data/Templates/notes.html")))
     {
-        <section class="notes">
+        <section class="notes" aria-label="further notes">
             <h5 class="notes-header">@Resources.Do.HeadingNotes</h5>
             <div class="notes-content">
                 @Html.Raw(File.ReadAllText(Server.MapPath("~/App_Data/Templates/notes.html")))
@@ -33,26 +33,44 @@
 @using (Html.BeginForm("Do", "Change", FormMethod.Post))
 {
     <h5>@Resources.Do.CurrentDetails</h5>
-    <div class="form-section">
+    <div class="form-section" area-label="password change form">
         <div class="form-row">
             <div class="form-group col-md-6 mr-auto ml-auto">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    @if (String.IsNullOrEmpty(Model?.UserName))
-                    {
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = Resources.UIMessages.UserName, @id = "user-name", @aria_label = Resources.UIMessages.UserName, @required = true, @autofocus = true })
+                    @{
+                        var usernameError = false;
+                        var usernameProps = new Dictionary<string, object>
+                        {
+                            { "class", "form-control" },
+                            { "placeholder", Resources.UIMessages.UserName },
+                            { "id", "user-name" },
+                            { "aria_label", Resources.UIMessages.UserName },
+                            { "required", true }
+                        };
+
+                        if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
+                        {
+                            usernameError = true;
+                            usernameProps.Add("aria_invalid", true);
+                            usernameProps.Add("aria_describedBy", "usernameValidationText");
+                        }
+
+                        if (String.IsNullOrEmpty(Model?.UserName))
+                        {
+                            usernameProps.Add("autofocus", true);
+                        }
+
+
                     }
-                    else
-                    {
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = Resources.UIMessages.UserName, @id = "user-name", @aria_label = Resources.UIMessages.UserName, @required = true })
-                    }
+                    @Html.TextBoxFor(model => model.UserName, usernameProps)
                 </div>
-                @if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
+                @if (usernameError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName)
+                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName, null, new { @id = "usernameValidationText" })
                     </div>
                 }
             </div>
@@ -63,19 +81,37 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
-                    @if (String.IsNullOrEmpty(Model?.UserName))
-                    {
-                        @Html.PasswordFor(model => model.CurrentPassword, new { @class = "form-control", placeholder = Resources.UIMessages.CurrentPassword, @aria_label = Resources.UIMessages.CurrentPassword, @required = true })
+                    @{
+                        var currPasswordError = false;
+                        var currPasswordProps = new Dictionary<string, object>
+                                {
+                                    { "class", "form-control" },
+                                    { "placeholder", Resources.UIMessages.CurrentPassword },
+                                    { "id", "current-password" },
+                                    { "aria_label", Resources.UIMessages.CurrentPassword },
+                                    { "required", true }
+                                };
+
+                        if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
+                        {
+                            currPasswordError = true;
+                            currPasswordProps.Add("aria_invalid", true);
+                            currPasswordProps.Add("aria_describedBy", "currPasswordValidationText");
+                        }
+
+                        if (!String.IsNullOrEmpty(Model?.CurrentPassword))
+                        {
+                            currPasswordProps.Add("autofocus", true);
+                        }
+
+
                     }
-                    else
-                    {
-                        @Html.PasswordFor(model => model.CurrentPassword, new { @class = "form-control", placeholder = Resources.UIMessages.CurrentPassword, @aria_label = Resources.UIMessages.CurrentPassword, @required = true, @autofocus = true })
-                    }
+                    @Html.PasswordFor(model => model.CurrentPassword, currPasswordProps)
                 </div>
-                @if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
+                @if (currPasswordError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword)
+                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword, null, new { @id = "currPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -89,12 +125,20 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-greater-than"></i></span>
                     </div>
-                    @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.NewPassword, @id = "new-password-input", @aria_label = Resources.UIMessages.NewPassword })
+                    @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
+                    {
+                        @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.NewPassword, @id = "new-password-input", @aria_label = Resources.UIMessages.NewPassword, @aria_invalid = true, @aria_describedBy = "newPasswordValidationText" })
+                    }
+                    else
+                    {
+                        @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.NewPassword, @id = "new-password-input", @aria_label = Resources.UIMessages.NewPassword })
+                    }
+
                 </div>
                 @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword)
+                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword, null, new { @id = "newPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -105,12 +149,20 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-greater-than"></i></span>
                     </div>
-                    @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.ConfirmNewPassword, @aria_label = Resources.UIMessages.ConfirmNewPassword })
+                    @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
+                    {
+                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.ConfirmNewPassword, @aria_label = Resources.UIMessages.ConfirmNewPassword, @aria_invalid = true, @aria_describedBy = "confirmPasswordValidationText" })
+                    }
+                    else
+                    {
+                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.ConfirmNewPassword, @aria_label = Resources.UIMessages.ConfirmNewPassword })
+                    }
+
                 </div>
                 @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword)
+                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword, null, new { @id = "confirmPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -123,6 +175,10 @@
         <div class="alert alert-danger" role="alert">
             <i class="fas fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
         </div>
+        }
+        @if (Model?.Redirect != null)
+        {
+            @Html.HiddenFor(model => model.Redirect)
         }
     </div>
 
