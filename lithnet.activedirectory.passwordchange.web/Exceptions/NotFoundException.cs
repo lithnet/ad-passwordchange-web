@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace lithnet.activedirectory.passwordchange.web.Exceptions
+namespace Lithnet.ActiveDirectory.PasswordChange.Web.Exceptions
 {
     [Serializable]
     internal class NotFoundException : Exception

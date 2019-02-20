@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public static class UnityConfig
     {
@@ -16,7 +16,7 @@ namespace lithnet.activedirectory.passwordchange.web
 
             if (ConfigurationManager.AppSettings["HIBPEnabled"] == "true")
             {
-                EnabledPasswordServices.Add(new HIBPPasswordManager());
+                EnabledPasswordServices.Add(new HibpPasswordManager());
             }
             if (ConfigurationManager.AppSettings["LPPEnabled"] == "true")
             {

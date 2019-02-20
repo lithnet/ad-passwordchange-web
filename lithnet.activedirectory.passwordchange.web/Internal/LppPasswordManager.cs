@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Lithnet.ActiveDirectory.PasswordProtection;
 using LppResult = Lithnet.ActiveDirectory.PasswordProtection.PasswordTestResult;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public class LppPasswordManager : IPasswordManager
     {
-
         public async Task<PasswordTestResult> TestPartialPassword(string username, string password)
         {
             try
@@ -19,9 +16,7 @@ namespace lithnet.activedirectory.passwordchange.web
             }
             catch (Exception)
             {
-                return new PasswordTestResult(
-                    PasswordTestResultCode.GeneralError
-                    );
+                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
 
                 // Todo: Log the exception
             }
@@ -38,15 +33,10 @@ namespace lithnet.activedirectory.passwordchange.web
             }
             catch (Exception)
             {
-                return new PasswordTestResult(
-                    PasswordTestResultCode.GeneralError
-                    );
+                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
 
                 // Todo: Log the exception
             }
-
         }
-
     }
-
 }

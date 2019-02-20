@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public class BundleConfig
     {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using Resources;
 
-namespace lithnet.activedirectory.passwordchange.web.Models
+namespace Lithnet.ActiveDirectory.PasswordChange.Web.Models
 {
     [Localizable(true)]
     public class PasswordChangeRequestModel
@@ -28,6 +24,5 @@ namespace lithnet.activedirectory.passwordchange.web.Models
         public bool Success { get; set; }
 
         public string Redirect { get; set; }
-
     }
 }

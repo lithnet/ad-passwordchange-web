@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Web.Mvc;
-using lithnet.activedirectory.passwordchange.web.Models;
 using System.Threading.Tasks;
-using lithnet.activedirectory.passwordchange.web.Exceptions;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Lithnet.ActiveDirectory.PasswordChange.Web.Exceptions;
+using Lithnet.ActiveDirectory.PasswordChange.Web.Models;
 
-namespace lithnet.activedirectory.passwordchange.web.Controllers
+namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
 {
     public class ChangeController : Controller
     {
-        private IPasswordManager passwordManager;
+        private readonly IPasswordManager passwordManager;
 
         private static List<string> redirectWhitelist;
 
@@ -26,13 +27,13 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
            
             if (!String.IsNullOrEmpty(username))
             {
-                pageModel.UserName = Server.HtmlEncode(username);
+                pageModel.UserName = this.Server.HtmlEncode(username);
             }
 
             if (!String.IsNullOrEmpty(redirect))
             {
-                redirect = Server.HtmlEncode(redirect);
-                if (ValidRedirectUri(redirect))
+                redirect = this.Server.HtmlEncode(redirect);
+                if (this.ValidRedirectUri(redirect))
                 {
                     pageModel.Redirect = redirect;
                 }
@@ -50,15 +51,15 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Do(PasswordChangeRequestModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
             if (model.NewPassword != model.ConfirmNewPassword)
             {
                 model.FailureReason = Resources.UIMessages.PasswordsDoNotMatch;
-                return View(model);
+                return this.View(model);
             }
 
             try
@@ -68,15 +69,15 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
                 if (result.Code != PasswordTestResultCode.Approved)
                 {
                     model.FailureReason = result.ToString();
-                    return View(model);
+                    return this.View(model);
                 }
 
-                await ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
+                await this.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
 
                 model.Success = true;
                 if (model.Redirect != null)
                 {
-                    if (ValidRedirectUri(model.Redirect))
+                    if (this.ValidRedirectUri(model.Redirect))
                     {
                         return new RedirectResult(model.Redirect);
                     }
@@ -107,19 +108,18 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
                 model.FailureReason = Resources.UIMessages.UnhandledError;
                 return this.View(model);
             }
-
         }
 
         public async Task<ActionResult> Success(PasswordChangeRequestModel model)
         {
             if (!model.Success)
             {
-                return RedirectToAction("Do");
+                return this.RedirectToAction("Do");
             }
 
             if (model.Redirect != null)
             {
-                if (ValidRedirectUri(model.Redirect))
+                if (this.ValidRedirectUri(model.Redirect))
                 {
                     return new RedirectResult(model.Redirect);
                 }
@@ -134,25 +134,24 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
         public async Task ChangePassword(string username, string oldPassword, string newPassword)
         {
-            var userPrincipal = await WindowsSamController.GetUserPrincipal(username);
-
+            UserPrincipal userPrincipal = await WindowsSamController.GetUserPrincipal(username);
             await WindowsSamController.ChangeUserPassword(userPrincipal, oldPassword, newPassword);
         }
 
-        public bool ValidRedirectUri(string Uri)
+        public bool ValidRedirectUri(string uri)
         {
             // Only load the whitelist once from file
             if (redirectWhitelist == null)
             {
-                redirectWhitelist = System.IO.File.ReadAllLines(Server.MapPath("~/App_Data/RedirectWhitelist.txt")).ToList();
+                redirectWhitelist = System.IO.File.ReadAllLines(this.Server.MapPath("~/App_Data/RedirectWhitelist.txt")).ToList();
             }
 
             if (redirectWhitelist != null)
             {
-                foreach (var u in redirectWhitelist)
+                foreach (string u in redirectWhitelist)
                 {
-                    var pattern = Regex.Escape(u).Replace("%%", ".*");
-                    var result = Regex.Match(Uri.ToLower(), pattern.ToLower());
+                    string pattern = Regex.Escape(u).Replace("%%", ".*");
+                    Match result = Regex.Match(uri.ToLower(), pattern.ToLower());
                     if (result.Success)
                     {
                         return true;
@@ -162,6 +161,5 @@ namespace lithnet.activedirectory.passwordchange.web.Controllers
 
             return false;
         }
-
     }
 }

@@ -1,46 +1,30 @@
-﻿using lithnet.activedirectory.passwordchange.web.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.DirectoryServices.AccountManagement;
-using System.Linq;
-using System.Net;
+﻿using System;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
-    public class HIBPPasswordManager : IPasswordManager
+    public class HibpPasswordManager : IPasswordManager
     {
-
         public async Task<PasswordTestResult> TestPartialPassword(string username, string password)
         {
             try
             {
-                int pwnCount = await getPwnCount(password);
+                int pwnCount = await this.GetPwnCount(password);
 
                 if (pwnCount > 0)
                 {
                     // Password has been pwned, so return error code
-                    return new PasswordTestResult(
-                        PasswordTestResultCode.PasswordIsPwned,
-                        pwnCount
-                        );
+                    return new PasswordTestResult( PasswordTestResultCode.PasswordIsPwned, pwnCount);
                 }
 
                 // Otherwise, return successful test result
                 return new PasswordTestResult();
-
-                // Todo: Log that password is good
             }
             catch (Exception)
             {
-                return new PasswordTestResult(
-                    PasswordTestResultCode.GeneralError
-                    );
+                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
 
                 // Todo: Log the exception
             }
@@ -50,37 +34,29 @@ namespace lithnet.activedirectory.passwordchange.web
         {
             try
             {
-                int pwnCount = await getPwnCount(password);
+                int pwnCount = await this.GetPwnCount(password);
 
                 if (pwnCount > 0)
                 {
                     // Password has been pwned, so return error code
-                    return new PasswordTestResult(
-                        PasswordTestResultCode.PasswordIsPwned,
-                        pwnCount
-                        );
+                    return new PasswordTestResult(PasswordTestResultCode.PasswordIsPwned, pwnCount);
                 }
 
                 // Otherwise, return successful test result
                 return new PasswordTestResult();
-
-                // Todo: Log that password is good
             }
             catch (Exception)
             {
-                return new PasswordTestResult(
-                    PasswordTestResultCode.GeneralError
-                    );
+                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
 
                 // Todo: Log the exception
             }
-
         }
 
-        private async Task<int> getPwnCount(string password)
+        private async Task<int> GetPwnCount(string password)
         {
             // Hash the supplied password using SHA1
-            var hasher = SHA1.Create();
+            SHA1 hasher = SHA1.Create();
             byte[] hashedPasswordBytes = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             string hashedPasswordString = hashedPasswordBytes.ToHexString();
             string hashedPasswordPrefix = hashedPasswordString.Substring(0, 5);
@@ -108,7 +84,5 @@ namespace lithnet.activedirectory.passwordchange.web
 
             return 0;
         }
-
     }
-
 }

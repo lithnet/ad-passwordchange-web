@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="lithnet.activedirectory.passwordchange.web.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Lithnet.ActiveDirectory.PasswordChange.Web.MvcApplication" Language="C#" %>

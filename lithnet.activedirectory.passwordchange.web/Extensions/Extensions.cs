@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
+﻿using System.Text;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public static class Extensions
     {

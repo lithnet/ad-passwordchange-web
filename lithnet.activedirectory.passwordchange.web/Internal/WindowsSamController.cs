@@ -1,15 +1,13 @@
-﻿using lithnet.activedirectory.passwordchange.web.Exceptions;
-using System;
-using System.DirectoryServices.AccountManagement;
+﻿using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Lithnet.ActiveDirectory.PasswordChange.Web.Exceptions;
 
-namespace lithnet.activedirectory.passwordchange.web
+namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public static class WindowsSamController
     {
-
         /// <summary>
         /// Connect to the Security Account Manager service and retrieve the user principal
         /// structure for a given username or user email address.
@@ -18,25 +16,20 @@ namespace lithnet.activedirectory.passwordchange.web
         /// <returns>User Principal data structure if found</returns>
         public static async Task<UserPrincipal> GetUserPrincipal(string userOrEmail)
         {
-            using (PrincipalContext context = new PrincipalContext(ContextType.Machine))
+            using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
             {
                 // Try to retrieve the user principal data from the security account manager
                 UserPrincipal userItem = null;
 
-                // If user has provided an email address instead of username, use this.
-                // Note the check is a simple regular expression to confirm the format is <text>@<text>.<2-4 chars>
                 if (userOrEmail.IndexOf('@') >= 0)
                 {
-                    return await GetUserPrincipalByUPN(userOrEmail, context) ?? 
+                    return await WindowsSamController.GetUserPrincipalByUpn(userOrEmail, context) ??
                         await GetUserPrincipalByEmail(userOrEmail, context) ??
                         throw new NotFoundException();
                 }
                 else
                 {
-                    userItem = await Task.Run(() =>
-                    {
-                        return UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userOrEmail);
-                    });
+                    userItem = await Task.Run(() => UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userOrEmail));
                 }
                 
                 // If we couldn't find a matching account, throw an error to the calling routine
@@ -59,43 +52,34 @@ namespace lithnet.activedirectory.passwordchange.web
                 PrincipalSearcher searcher = new PrincipalSearcher(searchUser);
 
                 UserPrincipal foundUser = null;
-                foreach (var result in searcher.FindAll().OfType<UserPrincipal>())
+                foreach (UserPrincipal result in searcher.FindAll().OfType<UserPrincipal>())
                 {
                     if (foundUser != null)
                     {
                         throw new MultipleMatchesException();
                     }
 
-                    foundUser = result as UserPrincipal;
+                    foundUser = result;
                 }
 
                 return foundUser;
             });
         }
 
-        private static async Task<UserPrincipal> GetUserPrincipalByUPN(string upn, PrincipalContext context)
+        private static async Task<UserPrincipal> GetUserPrincipalByUpn(string upn, PrincipalContext context)
         {
-            // Username is going to be string before the '@' symbol
-            return await Task.Run(() =>
-            {
-                return UserPrincipal.FindByIdentity(context, IdentityType.UserPrincipalName, upn);
-            });
+            return await Task.Run(() => UserPrincipal.FindByIdentity(context, IdentityType.UserPrincipalName, upn));
         }
 
         public static async Task ChangeUserPassword(UserPrincipal user, string oldPassword, string newPassword)
         {
             try
             {
-                await Task.Run(() =>
-                {
-                    user.ChangePassword(oldPassword, newPassword);
-                });
-
+                await Task.Run(() => user.ChangePassword(oldPassword, newPassword));
             }
             catch (PasswordException ex)
             {
-                COMException inner = ex.InnerException as COMException;
-                if (inner != null)
+                if (ex.InnerException is COMException inner)
                 {
                     if (inner.ErrorCode == (unchecked((int)0x80070056)))
                     {

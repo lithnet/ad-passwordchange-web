@@ -2,7 +2,7 @@
     ViewBag.Title = "Password Change Page";
 }
 
-@model lithnet.activedirectory.passwordchange.web.Models.PasswordChangeRequestModel
+@model Lithnet.ActiveDirectory.PasswordChange.Web.Models.PasswordChangeRequestModel
 
 @section Instructions {
     @if (File.Exists(Server.MapPath("~/App_Data/Templates/instructions.html")))
@@ -41,8 +41,8 @@
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
                     @{
-                        var usernameError = false;
-                        var usernameProps = new Dictionary<string, object>
+                        bool usernameError = false;
+                        Dictionary<string, object> usernameProps = new Dictionary<string, object>
                         {
                             { "class", "form-control" },
                             { "placeholder", Resources.UIMessages.UserName },
@@ -82,8 +82,8 @@
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
                     @{
-                        var currPasswordError = false;
-                        var currPasswordProps = new Dictionary<string, object>
+                        bool currPasswordError = false;
+                        Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
                                 {
                                     { "class", "form-control" },
                                     { "placeholder", Resources.UIMessages.CurrentPassword },

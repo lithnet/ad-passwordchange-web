@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace lithnet.activedirectory.passwordchange.web
+﻿namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public enum PasswordTestResultCode : int
     {
