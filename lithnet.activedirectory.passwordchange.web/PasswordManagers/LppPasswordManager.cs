@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Lithnet.ActiveDirectory.PasswordProtection;
-using LppResult = Lithnet.ActiveDirectory.PasswordProtection.PasswordTestResult;
+using NLog;
 
 namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public class LppPasswordManager : IPasswordManager
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public async Task<PasswordTestResult> TestPartialPassword(string username, string password)
         {
-            try
-            {
-                PasswordTestResultCode result = (PasswordTestResultCode)(int)FilterInterface.TestPassword(username, username, password, false);
-                return new PasswordTestResult(result);
-            }
-            catch (Exception)
-            {
-                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
-
-                // Todo: Log the exception
-            }
+            return await this.TestPassword(username, password);
         }
 
         public async Task<PasswordTestResult> TestPassword(string username, string password)
@@ -28,14 +20,11 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             {
                 PasswordTestResultCode result = (PasswordTestResultCode)(int)FilterInterface.TestPassword(username, username, password, false);
                 return new PasswordTestResult(result);
-
-                // Todo: Log that password is good
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Error(ex, "An unexpected error occurred checking the password against the Lithnet Password Protection service");
                 return new PasswordTestResult(PasswordTestResultCode.GeneralError);
-
-                // Todo: Log the exception
             }
         }
     }

@@ -14,15 +14,17 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
 
             List<IPasswordManager> EnabledPasswordServices = new List<IPasswordManager>();
 
-            if (ConfigurationManager.AppSettings["HIBPEnabled"] == "true")
+            if (PasswordChangeConfigSection.Configuration.HibpEnabled)
             {
                 EnabledPasswordServices.Add(new HibpPasswordManager());
             }
-            if (ConfigurationManager.AppSettings["LPPEnabled"] == "true")
+
+            if (PasswordChangeConfigSection.Configuration.LppEnabled)
             {
                 EnabledPasswordServices.Add(new LppPasswordManager());
             }
-            if (ConfigurationManager.AppSettings["TestEnabled"] == "true")
+
+            if (PasswordChangeConfigSection.Configuration.TestPasswordManagerEnabled)
             {
                 EnabledPasswordServices.Add(new TestPasswordManager());
             }
@@ -30,6 +32,7 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             AggregatePasswordManager passwordManager = new AggregatePasswordManager(EnabledPasswordServices);
 
             container.RegisterInstance<IPasswordManager>(passwordManager);
+            container.RegisterInstance<RateLimiter>(new RateLimiter(new IpAddressParser()));
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

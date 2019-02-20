@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts..
+        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string Banned {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts..
+        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string BannedNormalizedPassword {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is unsafe and should not be used here or for any other accounts..
+        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string BannedNormalizedWord {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password has been updated successfully!.
+        ///   Looks up a localized string similar to Your password has been updated successfully..
         /// </summary>
         internal static string ChangeSuccessful {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password confirmation cannot be blank. Please enter your desired password twice to continue..
+        ///   Looks up a localized string similar to Please confirm your new password.
         /// </summary>
         internal static string ConfirmPasswordIsRequired {
             get {
@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Existing password cannot be blank. Please enter your current password to continue..
+        ///   Looks up a localized string similar to Please provide your current password.
         /// </summary>
         internal static string CurrentPasswordIsRequired {
             get {
@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password was explicitly rejected according to the complexity requirements..
+        ///   Looks up a localized string similar to Your password did not match the approval criteria..
         /// </summary>
         internal static string DidNotMatchApprovalRegex {
             get {
@@ -178,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something went wrong internally. Please contact your system administration team to report this issue..
+        ///   Looks up a localized string similar to Something went wrong. Please contact your service desk for support..
         /// </summary>
         internal static string FilterError {
             get {
@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something went wrong attempting to validate your password against the system rules. Please contact your system administration team to report this issue..
+        ///   Looks up a localized string similar to Something went wrong. Please contact your service desk for support..
         /// </summary>
         internal static string GeneralError {
             get {
@@ -196,7 +196,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to validate your existing credentials. Have you entered your current username and password correctly?.
+        ///   Looks up a localized string similar to You existing username or password is incorrect..
         /// </summary>
         internal static string InvalidUserOrPassword {
             get {
@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new password must be entered twice to continue..
+        ///   Looks up a localized string similar to Enter your new password.
         /// </summary>
         internal static string NewPasswordIsRequired {
             get {
@@ -241,7 +241,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That password does not meet our complexity requirements. Please review the instructions above and choose a slightly more difficult password to continue..
+        ///   Looks up a localized string similar to That password does not meet the complexity requirements. Please review the instructions above try again..
         /// </summary>
         internal static string PasswordDoesNotMeetPolicy {
             get {
@@ -250,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to According to HaveIBeenPwned, that password has been compromised {0} times. Please choose a different password to continue..
+        ///   Looks up a localized string similar to That password has been seen in {0} data breaches. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string PasswordIsPwned {
             get {
@@ -259,7 +259,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to According to HaveIBeenPwned, that password has been compromised {0} times. Please choose a different password to continue..
+        ///   Looks up a localized string similar to That password has been seen in {0} data breaches. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string PasswordPwned {
             get {
@@ -268,7 +268,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The confirmation password did not match the new password entered. Please enter your desired password twice to continue..
+        ///   Looks up a localized string similar to The new passwords do not match..
         /// </summary>
         internal static string PasswordsDoNotMatch {
             get {
@@ -295,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something went wrong attempting to validate your details. Please contact your system administration team to report this issue..
+        ///   Looks up a localized string similar to Something went wrong. Please contact your service desk for support..
         /// </summary>
         internal static string UnhandledError {
             get {
@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username cannot be blank. Please enter your account login to continue..
+        ///   Looks up a localized string similar to Username cannot be blank..
         /// </summary>
         internal static string UserNameIsRequired {
             get {

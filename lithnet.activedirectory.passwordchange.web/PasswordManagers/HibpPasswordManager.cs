@@ -2,32 +2,17 @@
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
     public class HibpPasswordManager : IPasswordManager
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public async Task<PasswordTestResult> TestPartialPassword(string username, string password)
         {
-            try
-            {
-                int pwnCount = await this.GetPwnCount(password);
-
-                if (pwnCount > 0)
-                {
-                    // Password has been pwned, so return error code
-                    return new PasswordTestResult( PasswordTestResultCode.PasswordIsPwned, pwnCount);
-                }
-
-                // Otherwise, return successful test result
-                return new PasswordTestResult();
-            }
-            catch (Exception)
-            {
-                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
-
-                // Todo: Log the exception
-            }
+            return await this.TestPassword(username, password);
         }
 
         public async Task<PasswordTestResult> TestPassword(string username, string password)
@@ -39,17 +24,17 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
                 if (pwnCount > 0)
                 {
                     // Password has been pwned, so return error code
+                    Logger.Warn($"User {username} attempted to set a password that has been seen in HIBP {pwnCount} times");
                     return new PasswordTestResult(PasswordTestResultCode.PasswordIsPwned, pwnCount);
                 }
 
                 // Otherwise, return successful test result
                 return new PasswordTestResult();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Error(ex, "An unexpected error occurred when trying to check the password against the HIBP service");
                 return new PasswordTestResult(PasswordTestResultCode.GeneralError);
-
-                // Todo: Log the exception
             }
         }
 

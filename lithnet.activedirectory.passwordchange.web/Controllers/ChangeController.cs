@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Lithnet.ActiveDirectory.PasswordChange.Web.Exceptions;
 using Lithnet.ActiveDirectory.PasswordChange.Web.Models;
+using NLog;
 
 namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
 {
@@ -14,56 +13,76 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
     {
         private readonly IPasswordManager passwordManager;
 
-        private static List<string> redirectWhitelist;
+        private readonly RateLimiter rateLimiter;
 
-        public ChangeController(IPasswordManager passwordManager)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public ChangeController(IPasswordManager passwordManager, RateLimiter rateLimiter)
         {
             this.passwordManager = passwordManager;
+            this.rateLimiter = rateLimiter;
         }
 
         public ActionResult Do(string username, string redirect)
         {
-            PasswordChangeRequestModel pageModel = new PasswordChangeRequestModel();
-           
-            if (!String.IsNullOrEmpty(username))
+            try
             {
-                pageModel.UserName = this.Server.HtmlEncode(username);
-            }
+                this.rateLimiter.ThrowOnRateLimitExceeded(username, this.Request);
 
-            if (!String.IsNullOrEmpty(redirect))
-            {
-                redirect = this.Server.HtmlEncode(redirect);
-                if (this.ValidRedirectUri(redirect))
+                PasswordChangeRequestModel pageModel = new PasswordChangeRequestModel();
+
+                if (!string.IsNullOrEmpty(username))
                 {
-                    pageModel.Redirect = redirect;
+                    pageModel.UserName = this.Server.HtmlEncode(username);
                 }
-            }
 
-            if (!this.ModelState.IsValid)
-            {
+                if (!string.IsNullOrEmpty(redirect))
+                {
+                    redirect = this.Server.HtmlEncode(redirect);
+                    if (this.ValidRedirectUri(redirect))
+                    {
+                        pageModel.Redirect = redirect;
+                    }
+                }
+
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(pageModel);
+                }
+
                 return this.View(pageModel);
             }
-
-            return this.View(pageModel);
+            catch (RateLimitExceededException ex)
+            {
+                Logger.Error(ex);
+                return this.View("RateLimitExceeded");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "An unhandled exception occurred in Do");
+                return this.View("Error");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Do(PasswordChangeRequestModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
-
-            if (model.NewPassword != model.ConfirmNewPassword)
-            {
-                model.FailureReason = Resources.UIMessages.PasswordsDoNotMatch;
-                return this.View(model);
-            }
-
             try
             {
+                this.rateLimiter.ThrowOnRateLimitExceeded(model.UserName, this.Request);
+
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(model);
+                }
+
+                if (model.NewPassword != model.ConfirmNewPassword)
+                {
+                    model.FailureReason = Resources.UIMessages.PasswordsDoNotMatch;
+                    return this.View(model);
+                }
+
                 PasswordTestResult result = await this.passwordManager.TestPassword(model.UserName, model.NewPassword).ConfigureAwait(false);
 
                 if (result.Code != PasswordTestResultCode.Approved)
@@ -72,9 +91,17 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
                     return this.View(model);
                 }
 
-                await this.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
+                try
+                {
+                    await this.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
+                    model.Success = true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, $"The password change attempt for user {model.UserName} failed");
+                    throw;
+                }
 
-                model.Success = true;
                 if (model.Redirect != null)
                 {
                     if (this.ValidRedirectUri(model.Redirect))
@@ -86,7 +113,8 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
                         model.Redirect = null;
                     }
                 }
-                return this.View("Success", model);
+
+                return this.View("Success");
             }
             catch (NotFoundException)
             {
@@ -103,63 +131,33 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
                 model.FailureReason = Resources.UIMessages.PasswordDoesNotMeetPolicy;
                 return this.View(model);
             }
+            catch (RateLimitExceededException ex)
+            {
+                Logger.Error(ex);
+                return this.View("RateLimitExceeded");
+            }
             catch (Exception ex)
             {
+                Logger.Error(ex, "An unhandled exception occurred when attempting the password change");
                 model.FailureReason = Resources.UIMessages.UnhandledError;
                 return this.View(model);
             }
         }
 
-        public async Task<ActionResult> Success(PasswordChangeRequestModel model)
+        public ActionResult Success()
         {
-            if (!model.Success)
-            {
-                return this.RedirectToAction("Do");
-            }
-
-            if (model.Redirect != null)
-            {
-                if (this.ValidRedirectUri(model.Redirect))
-                {
-                    return new RedirectResult(model.Redirect);
-                }
-                else
-                {
-                    model.Redirect = null;
-                }
-            }
-
             return this.View();
         }
 
-        public async Task ChangePassword(string username, string oldPassword, string newPassword)
+        private async Task ChangePassword(string username, string oldPassword, string newPassword)
         {
             UserPrincipal userPrincipal = await WindowsSamController.GetUserPrincipal(username);
             await WindowsSamController.ChangeUserPassword(userPrincipal, oldPassword, newPassword);
         }
 
-        public bool ValidRedirectUri(string uri)
+        private bool ValidRedirectUri(string uri)
         {
-            // Only load the whitelist once from file
-            if (redirectWhitelist == null)
-            {
-                redirectWhitelist = System.IO.File.ReadAllLines(this.Server.MapPath("~/App_Data/RedirectWhitelist.txt")).ToList();
-            }
-
-            if (redirectWhitelist != null)
-            {
-                foreach (string u in redirectWhitelist)
-                {
-                    string pattern = Regex.Escape(u).Replace("%%", ".*");
-                    Match result = Regex.Match(uri.ToLower(), pattern.ToLower());
-                    if (result.Success)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return PasswordChangeConfigSection.Configuration.AllowedReturnUrls.OfType<AllowedReturnUrlElement>().Any(t => string.Equals(t.Value, uri, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

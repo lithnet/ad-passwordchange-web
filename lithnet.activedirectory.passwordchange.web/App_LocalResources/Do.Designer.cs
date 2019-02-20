@@ -39,7 +39,7 @@ namespace Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("lithnet.activedirectory.passwordchange.web.App_LocalResources.Do", typeof(Do).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Lithnet.ActiveDirectory.PasswordChange.Web.App_LocalResources.Do", typeof(Do).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

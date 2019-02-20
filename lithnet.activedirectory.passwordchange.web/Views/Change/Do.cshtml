@@ -43,13 +43,13 @@
                     @{
                         bool usernameError = false;
                         Dictionary<string, object> usernameProps = new Dictionary<string, object>
-                        {
-                            { "class", "form-control" },
-                            { "placeholder", Resources.UIMessages.UserName },
-                            { "id", "user-name" },
-                            { "aria_label", Resources.UIMessages.UserName },
-                            { "required", true }
-                        };
+                                        {
+                                            { "class", "form-control" },
+                                            { "placeholder", Resources.UIMessages.UserName },
+                                            { "id", "user-name" },
+                                            { "aria_label", Resources.UIMessages.UserName },
+                                            { "required", true }
+                                        };
 
                         if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
                         {
@@ -58,7 +58,7 @@
                             usernameProps.Add("aria_describedBy", "usernameValidationText");
                         }
 
-                        if (String.IsNullOrEmpty(Model?.UserName))
+                        if (string.IsNullOrEmpty(Model?.UserName))
                         {
                             usernameProps.Add("autofocus", true);
                         }
@@ -84,13 +84,13 @@
                     @{
                         bool currPasswordError = false;
                         Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
-                                {
-                                    { "class", "form-control" },
-                                    { "placeholder", Resources.UIMessages.CurrentPassword },
-                                    { "id", "current-password" },
-                                    { "aria_label", Resources.UIMessages.CurrentPassword },
-                                    { "required", true }
-                                };
+                                                {
+                                                    { "class", "form-control" },
+                                                    { "placeholder", Resources.UIMessages.CurrentPassword },
+                                                    { "id", "current-password" },
+                                                    { "aria_label", Resources.UIMessages.CurrentPassword },
+                                                    { "required", true }
+                                                };
 
                         if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
                         {
@@ -99,7 +99,7 @@
                             currPasswordProps.Add("aria_describedBy", "currPasswordValidationText");
                         }
 
-                        if (!String.IsNullOrEmpty(Model?.CurrentPassword))
+                        if (!string.IsNullOrEmpty(Model?.CurrentPassword))
                         {
                             currPasswordProps.Add("autofocus", true);
                         }
@@ -167,14 +167,11 @@
                 }
             </div>
         </div>
-        <div class="pwstrength_meter">
-            <label id="password-test-info"></label>
-        </div>
         @if (Model?.FailureReason != null)
         {
-        <div class="alert alert-danger" role="alert">
-            <i class="fas fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
-        </div>
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
+            </div>
         }
         @if (Model?.Redirect != null)
         {
@@ -186,7 +183,10 @@
         <div id="action-buttons">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn btn-primary">@Resources.Do.ButtonRequestChange</button>
-            <a href="#" class="btn btn-success">@Resources.Do.ButtonHelpDesk</a>
+            @if (!string.IsNullOrWhiteSpace(PasswordChangeConfigSection.Configuration.GetHelpLink))
+            {
+                <a href="@PasswordChangeConfigSection.Configuration.GetHelpLink" class="btn btn-outline-primary" target="_blank">@Resources.Do.ButtonHelpDesk</a>
+            }
         </div>
     </footer>
 }
