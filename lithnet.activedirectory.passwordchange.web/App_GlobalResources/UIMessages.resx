@@ -177,8 +177,8 @@
   <data name="NewPasswordIsRequired" xml:space="preserve">
     <value>Enter your new password</value>
   </data>
-  <data name="PasswordDoesNotMeetPolicy" xml:space="preserve">
-    <value>That password does not meet the complexity requirements. Please review the instructions above try again.</value>
+  <data name="PasswordRejectedByAdPolicy" xml:space="preserve">
+    <value>That password has either been used before, or you've tried to change your password more than once in a 24 hour period.</value>
   </data>
   <data name="PasswordIsPwned" xml:space="preserve">
     <value>That password has been seen in {0} data breaches. It is not safe to use here or on any other accounts you may have.</value>

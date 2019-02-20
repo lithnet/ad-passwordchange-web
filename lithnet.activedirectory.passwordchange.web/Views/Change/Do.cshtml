@@ -43,13 +43,13 @@
                     @{
                         bool usernameError = false;
                         Dictionary<string, object> usernameProps = new Dictionary<string, object>
-                                        {
-                                            { "class", "form-control" },
-                                            { "placeholder", Resources.UIMessages.UserName },
-                                            { "id", "user-name" },
-                                            { "aria_label", Resources.UIMessages.UserName },
-                                            { "required", true }
-                                        };
+                                                        {
+                                                            { "class", "form-control" },
+                                                            { "placeholder", Resources.UIMessages.UserName },
+                                                            { "id", "user-name" },
+                                                            { "aria_label", Resources.UIMessages.UserName },
+                                                            { "required", true }
+                                                        };
 
                         if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
                         {
@@ -62,8 +62,6 @@
                         {
                             usernameProps.Add("autofocus", true);
                         }
-
-
                     }
                     @Html.TextBoxFor(model => model.UserName, usernameProps)
                 </div>
@@ -84,13 +82,13 @@
                     @{
                         bool currPasswordError = false;
                         Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
-                                                {
-                                                    { "class", "form-control" },
-                                                    { "placeholder", Resources.UIMessages.CurrentPassword },
-                                                    { "id", "current-password" },
-                                                    { "aria_label", Resources.UIMessages.CurrentPassword },
-                                                    { "required", true }
-                                                };
+                                                                {
+                                                                    { "class", "form-control" },
+                                                                    { "placeholder", Resources.UIMessages.CurrentPassword },
+                                                                    { "id", "current-password" },
+                                                                    { "aria_label", Resources.UIMessages.CurrentPassword },
+                                                                    { "required", true }
+                                                                };
 
                         if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
                         {
@@ -99,11 +97,14 @@
                             currPasswordProps.Add("aria_describedBy", "currPasswordValidationText");
                         }
 
-                        if (!string.IsNullOrEmpty(Model?.CurrentPassword))
+                        if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
+                        {
+                            currPasswordProps.Add("value", Model.CurrentPassword);
+                        }
+                        else if (string.IsNullOrEmpty(Model?.CurrentPassword))
                         {
                             currPasswordProps.Add("autofocus", true);
                         }
-
 
                     }
                     @Html.PasswordFor(model => model.CurrentPassword, currPasswordProps)
@@ -125,14 +126,30 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-greater-than"></i></span>
                     </div>
+
+                    @{
+                        Dictionary<string, object> newPasswordProps = new Dictionary<string, object>
+                            {
+                                {"class", "form-control"},
+                                {"placeholder", Resources.UIMessages.NewPassword},
+                                {"id", "new-password-input"},
+                                {"aria_label", Resources.UIMessages.NewPassword},
+                                {"required", true}
+                            };
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
+                    {
+                        newPasswordProps.Add("autofocus", true);
+                    }
+
                     @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
                     {
-                        @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.NewPassword, @id = "new-password-input", @aria_label = Resources.UIMessages.NewPassword, @aria_invalid = true, @aria_describedBy = "newPasswordValidationText" })
+                        newPasswordProps.Add("aria_invalid", true);
+                        newPasswordProps.Add("aria_describedBy", "newPasswordValidationText");
                     }
-                    else
-                    {
-                        @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.NewPassword, @id = "new-password-input", @aria_label = Resources.UIMessages.NewPassword })
-                    }
+
+                    @Html.PasswordFor(model => model.NewPassword, newPasswordProps)
 
                 </div>
                 @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())

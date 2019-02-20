@@ -1,4 +1,5 @@
-﻿using System.DirectoryServices.AccountManagement;
+﻿using System;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -79,19 +80,32 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             }
             catch (PasswordException ex)
             {
-                if (ex.InnerException is COMException inner)
-                {
-                    if (inner.ErrorCode == (unchecked((int)0x80070056)))
-                    {
-                        throw new PasswordIncorrectException(ex.Message);
-                    }
-                    else if (inner.ErrorCode == (unchecked((int)0x800708C5)))
-                    {
-                        throw new PasswordDoesNotMeetPolicyException(ex.Message);
-                    }
-                }
-
+                UnwrapAndRethrowPasswordException(ex);
                 throw;
+            }
+            catch (PrincipalOperationException ex)
+            {
+                UnwrapAndRethrowPasswordException(ex);
+                throw;
+            }
+        }
+
+        private static void UnwrapAndRethrowPasswordException(Exception ex)
+        {
+            if (ex.InnerException is COMException inner)
+            {
+                if (inner.ErrorCode == (unchecked((int)0x80070056)))
+                {
+                    throw new PasswordIncorrectException(ex.Message);
+                }
+                else if (inner.ErrorCode == (unchecked((int)0x800708C5)))
+                {
+                    throw new PasswordDoesNotMeetPolicyException(ex.Message);
+                }
+                else if (inner.ErrorCode == (unchecked((int)0x8007052D)))
+                {
+                    throw new PasswordDoesNotMeetPolicyException(ex.Message);
+                }
             }
         }
     }

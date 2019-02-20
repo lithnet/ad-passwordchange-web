@@ -91,16 +91,8 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
                     return this.View(model);
                 }
 
-                try
-                {
-                    await this.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
-                    model.Success = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, $"The password change attempt for user {model.UserName} failed");
-                    throw;
-                }
+                await this.ChangePassword(model.UserName, model.CurrentPassword, model.NewPassword).ConfigureAwait(false);
+                model.Success = true;
 
                 if (model.Redirect != null)
                 {
@@ -118,22 +110,25 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
             }
             catch (NotFoundException)
             {
+                Logger.Error($"The password change attempt for user {model.UserName} failed because the user was not found in the directory");
                 model.FailureReason = Resources.UIMessages.InvalidUserOrPassword;
                 return this.View(model);
             }
             catch (PasswordIncorrectException)
             {
+                Logger.Error($"The password change attempt for user {model.UserName} failed because the current password was incorrect");
                 model.FailureReason = Resources.UIMessages.InvalidUserOrPassword;
                 return this.View(model);
             }
             catch (PasswordDoesNotMeetPolicyException)
             {
-                model.FailureReason = Resources.UIMessages.PasswordDoesNotMeetPolicy;
+                Logger.Error($"The password change attempt for user {model.UserName} failed because AD rejected the password change");
+                model.FailureReason = Resources.UIMessages.PasswordRejectedByAdPolicy;
                 return this.View(model);
             }
             catch (RateLimitExceededException ex)
             {
-                Logger.Error(ex);
+                Logger.Error(ex.Message);
                 return this.View("RateLimitExceeded");
             }
             catch (Exception ex)

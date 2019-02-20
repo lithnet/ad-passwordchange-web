@@ -241,15 +241,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That password does not meet the complexity requirements. Please review the instructions above try again..
-        /// </summary>
-        internal static string PasswordDoesNotMeetPolicy {
-            get {
-                return ResourceManager.GetString("PasswordDoesNotMeetPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to That password has been seen in {0} data breaches. It is not safe to use here or on any other accounts you may have..
         /// </summary>
         internal static string PasswordIsPwned {
@@ -264,6 +255,15 @@ namespace Resources {
         internal static string PasswordPwned {
             get {
                 return ResourceManager.GetString("PasswordPwned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to That password has either been used before, or you&apos;ve tried to change your password more than once in a 24 hour period..
+        /// </summary>
+        internal static string PasswordRejectedByAdPolicy {
+            get {
+                return ResourceManager.GetString("PasswordRejectedByAdPolicy", resourceCulture);
             }
         }
         

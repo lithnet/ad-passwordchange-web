@@ -19,6 +19,11 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             try
             {
                 PasswordTestResultCode result = (PasswordTestResultCode)(int)FilterInterface.TestPassword(username, username, password, false);
+                if (result != PasswordTestResultCode.Approved)
+                {
+                    Logger.Warn($"User {username} attempted to set a password that was rejected by Lithnet Password Protection with the following code: {result}");
+                }
+
                 return new PasswordTestResult(result);
             }
             catch (Exception ex)
