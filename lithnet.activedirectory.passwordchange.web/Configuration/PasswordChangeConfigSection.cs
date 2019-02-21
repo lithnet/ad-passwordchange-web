@@ -15,9 +15,7 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         private const string PropCustomLinks = "custom-links";
         private const string PropIpDetection = "ip-detection";
         private const string PropBranding = "branding";
-        private const string PropHibpEnabled = "hibpEnabled";
-        private const string PropLppEnabled = "lppEnabled";
-        private const string PropTestPasswordManagerEnabled = "tpmEnabled";
+        private const string PropPasswordTesting = "password-testing";
 
         internal static PasswordChangeConfigSection GetConfiguration()
         {
@@ -43,14 +41,8 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         [ConfigurationProperty(PropBranding, IsRequired = false)]
         public BrandingElement Branding => (BrandingElement)this[PropBranding];
 
-        [ConfigurationProperty(PropHibpEnabled, IsRequired = false, DefaultValue = false)]
-        public bool HibpEnabled => (bool)this[PropHibpEnabled];
-
-        [ConfigurationProperty(PropLppEnabled, IsRequired = false, DefaultValue = false)]
-        public bool LppEnabled => (bool)this[PropLppEnabled];
-
-        [ConfigurationProperty(PropTestPasswordManagerEnabled, IsRequired = false, DefaultValue = false)]
-        public bool TestPasswordManagerEnabled => (bool)this[PropTestPasswordManagerEnabled];
+        [ConfigurationProperty(PropPasswordTesting, IsRequired = false)]
+        public PasswordTestingElement PasswordTesting => (PasswordTestingElement)this[PropPasswordTesting];
 
         [ConfigurationProperty(PropReturnUrls)]
         [ConfigurationCollection(typeof(AllowedReturnUrlCollection), AddItemName = "allowed-return-url", CollectionType = ConfigurationElementCollectionType.BasicMap)]

@@ -14,17 +14,17 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
 
             List<IPasswordManager> EnabledPasswordServices = new List<IPasswordManager>();
 
-            if (PasswordChangeConfigSection.Configuration.HibpEnabled)
+            if (PasswordChangeConfigSection.Configuration.PasswordTesting.HibpEnabled)
             {
                 EnabledPasswordServices.Add(new HibpPasswordManager());
             }
 
-            if (PasswordChangeConfigSection.Configuration.LppEnabled)
+            if (PasswordChangeConfigSection.Configuration.PasswordTesting.LppEnabled)
             {
                 EnabledPasswordServices.Add(new LppPasswordManager());
             }
 
-            if (PasswordChangeConfigSection.Configuration.TestPasswordManagerEnabled)
+            if (PasswordChangeConfigSection.Configuration.PasswordTesting.TestPasswordManagerEnabled)
             {
                 EnabledPasswordServices.Add(new TestPasswordManager());
             }
