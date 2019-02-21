@@ -29,7 +29,15 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             catch (Exception ex)
             {
                 Logger.Error(ex, "An unexpected error occurred checking the password against the Lithnet Password Protection service");
-                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
+
+                if (PasswordChangeConfigSection.Configuration.PasswordTesting.LppIgnoreErrors)
+                {
+                    return new PasswordTestResult();
+                }
+                else
+                {
+                    return new PasswordTestResult(PasswordTestResultCode.GeneralError);
+                }
             }
         }
     }

@@ -34,7 +34,15 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             catch (Exception ex)
             {
                 Logger.Error(ex, "An unexpected error occurred when trying to check the password against the HIBP service");
-                return new PasswordTestResult(PasswordTestResultCode.GeneralError);
+
+                if (PasswordChangeConfigSection.Configuration.PasswordTesting.HibpIgnoreErrors)
+                {
+                    return new PasswordTestResult();
+                }
+                else
+                {
+                    return new PasswordTestResult(PasswordTestResultCode.GeneralError);
+                }
             }
         }
 

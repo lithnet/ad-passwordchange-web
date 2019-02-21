@@ -11,7 +11,8 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         private const string PropHibpEnabled = "hibpEnabled";
         private const string PropLppEnabled = "lppEnabled";
         private const string PropTestPasswordManagerEnabled = "tpmEnabled";
-
+        private const string PropHibpIgnoreErrors  = "hibpIgnoreErrors";
+        private const string PropLppIgnoreErrors  = "lppIgnoreErrors";
 
         [ConfigurationProperty(PropHibpEnabled, IsRequired = false, DefaultValue = false)]
         public bool HibpEnabled => (bool)this[PropHibpEnabled];
@@ -21,5 +22,11 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
 
         [ConfigurationProperty(PropTestPasswordManagerEnabled, IsRequired = false, DefaultValue = false)]
         public bool TestPasswordManagerEnabled => (bool)this[PropTestPasswordManagerEnabled];
+
+        [ConfigurationProperty(PropHibpIgnoreErrors, IsRequired = false, DefaultValue = true)]
+        public bool HibpIgnoreErrors => (bool)this[PropHibpIgnoreErrors];
+
+        [ConfigurationProperty(PropLppIgnoreErrors, IsRequired = false, DefaultValue = true)]
+        public bool LppIgnoreErrors => (bool)this[PropLppIgnoreErrors];
     }
 }
