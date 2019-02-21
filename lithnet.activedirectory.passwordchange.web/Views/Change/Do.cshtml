@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Password Change Page";
+    ViewBag.Title = PasswordChangeConfigSection.Configuration.Branding.Header;
 }
 
 @model Lithnet.ActiveDirectory.PasswordChange.Web.Models.PasswordChangeRequestModel
@@ -43,13 +43,13 @@
                     @{
                         bool usernameError = false;
                         Dictionary<string, object> usernameProps = new Dictionary<string, object>
-                                                        {
-                                                            { "class", "form-control" },
-                                                            { "placeholder", Resources.UIMessages.UserName },
-                                                            { "id", "user-name" },
-                                                            { "aria_label", Resources.UIMessages.UserName },
-                                                            { "required", true }
-                                                        };
+                                                                {
+                                                                    { "class", "form-control" },
+                                                                    { "placeholder", Resources.UIMessages.UserName },
+                                                                    { "id", "user-name" },
+                                                                    { "aria_label", Resources.UIMessages.UserName },
+                                                                    { "required", true }
+                                                                };
 
                         if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
                         {
@@ -82,13 +82,13 @@
                     @{
                         bool currPasswordError = false;
                         Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
-                                                                {
-                                                                    { "class", "form-control" },
-                                                                    { "placeholder", Resources.UIMessages.CurrentPassword },
-                                                                    { "id", "current-password" },
-                                                                    { "aria_label", Resources.UIMessages.CurrentPassword },
-                                                                    { "required", true }
-                                                                };
+                                                                        {
+                                                                            { "class", "form-control" },
+                                                                            { "placeholder", Resources.UIMessages.CurrentPassword },
+                                                                            { "id", "current-password" },
+                                                                            { "aria_label", Resources.UIMessages.CurrentPassword },
+                                                                            { "required", true }
+                                                                        };
 
                         if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
                         {
@@ -129,13 +129,13 @@
 
                     @{
                         Dictionary<string, object> newPasswordProps = new Dictionary<string, object>
-                            {
-                                {"class", "form-control"},
-                                {"placeholder", Resources.UIMessages.NewPassword},
-                                {"id", "new-password-input"},
-                                {"aria_label", Resources.UIMessages.NewPassword},
-                                {"required", true}
-                            };
+                                    {
+                                        {"class", "form-control"},
+                                        {"placeholder", Resources.UIMessages.NewPassword},
+                                        {"id", "new-password-input"},
+                                        {"aria_label", Resources.UIMessages.NewPassword},
+                                        {"required", true}
+                                    };
                     }
 
                     @if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
@@ -200,9 +200,14 @@
         <div id="action-buttons">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn btn-primary">@Resources.Do.ButtonRequestChange</button>
-            @if (!string.IsNullOrWhiteSpace(PasswordChangeConfigSection.Configuration.GetHelpLink))
+
+            @{
+                CustomLinkElement helpLink = PasswordChangeConfigSection.Configuration.CustomLinks.GetHelpLink;
+            }
+
+            @if (helpLink != null)
             {
-                <a href="@PasswordChangeConfigSection.Configuration.GetHelpLink" class="btn btn-outline-primary" target="_blank">@Resources.Do.ButtonHelpDesk</a>
+                <a href="@helpLink.LinkUrl" class="btn btn-outline-primary">@helpLink.LinkText</a>
             }
         </div>
     </footer>

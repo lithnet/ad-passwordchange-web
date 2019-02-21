@@ -1,12 +1,19 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = PasswordChangeConfigSection.Configuration.Branding.Header;
 }
 
 @model Lithnet.ActiveDirectory.PasswordChange.Web.Models.PasswordChangeRequestModel
 
-    <h5>@Resources.Success.SuccessTitle</h5>
-    <div class="alert alert-success" role="alert">
-        <i class="fas fa-check"></i> @Resources.Success.SuccessMessage
-    </div>
-    
-    <a href="javascript:window.close()" title="Close this window" class="btn btn-info">Close this window</a>
+<h5>@Resources.Success.SuccessTitle</h5>
+<div class="alert alert-success" role="alert">
+    <i class="fas fa-check"></i> @Resources.Success.SuccessMessage
+</div>
+
+@{
+    CustomLinkElement successLink = PasswordChangeConfigSection.Configuration.CustomLinks.SuccessButton;
+}
+
+@if (successLink != null)
+{
+    <a href="@successLink.LinkUrl" class="btn btn-primary">@successLink.LinkText</a>
+}

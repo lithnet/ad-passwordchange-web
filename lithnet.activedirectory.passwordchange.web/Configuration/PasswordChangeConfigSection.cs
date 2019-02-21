@@ -12,11 +12,12 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         private const string PropRateLimitIP = "rate-limit-ip";
         private const string PropRateLimitUser = "rate-limit-user";
         private const string PropReturnUrls = "allowed-return-urls";
+        private const string PropCustomLinks = "custom-links";
         private const string PropIpDetection = "ip-detection";
+        private const string PropBranding = "branding";
         private const string PropHibpEnabled = "hibpEnabled";
         private const string PropLppEnabled = "lppEnabled";
         private const string PropTestPasswordManagerEnabled = "tpmEnabled";
-        private const string PropGetHelpLink = "getHelpLink";
 
         internal static PasswordChangeConfigSection GetConfiguration()
         {
@@ -30,9 +31,6 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             return section;
         }
 
-        [ConfigurationProperty(PropGetHelpLink, IsRequired = false)]
-        public string GetHelpLink => (string)this[PropGetHelpLink];
-
         [ConfigurationProperty(PropIpDetection, IsRequired = false)]
         public IpAddressDetectionElement IPAddressDetection => (IpAddressDetectionElement)this[PropIpDetection];
 
@@ -41,6 +39,9 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
 
         [ConfigurationProperty(PropRateLimitUser, IsRequired = false)]
         public RateLimitUserElement RateLimitUser => (RateLimitUserElement)this[PropRateLimitUser];
+
+        [ConfigurationProperty(PropBranding, IsRequired = false)]
+        public BrandingElement Branding => (BrandingElement)this[PropBranding];
 
         [ConfigurationProperty(PropHibpEnabled, IsRequired = false, DefaultValue = false)]
         public bool HibpEnabled => (bool)this[PropHibpEnabled];
@@ -54,6 +55,10 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         [ConfigurationProperty(PropReturnUrls)]
         [ConfigurationCollection(typeof(AllowedReturnUrlCollection), AddItemName = "allowed-return-url", CollectionType = ConfigurationElementCollectionType.BasicMap)]
         public AllowedReturnUrlCollection AllowedReturnUrls => (AllowedReturnUrlCollection)this[PropReturnUrls];
+
+        [ConfigurationProperty(PropCustomLinks)]
+        [ConfigurationCollection(typeof(CustomLinkCollection), AddItemName = "custom-link", CollectionType = ConfigurationElementCollectionType.BasicMap)]
+        public CustomLinkCollection CustomLinks => (CustomLinkCollection)this[PropCustomLinks];
 
         public static PasswordChangeConfigSection Configuration { get; private set; }
 
