@@ -1,6 +1,6 @@
 ﻿@font-face {
     font-family: Inconsolata;
-    src: url('webfonts/Inconsolata-Regular.ttf');
+    src: url('../fonts/Inconsolata-Regular.ttf');
 }
 
 body {
@@ -15,219 +15,185 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 0;
+    text-align: center;
+    align-items: center;
+    position: relative;
+    top: 0;
 }
 
 /* Header Styles */
 
 header {
-    position: relative;
     display: block;
     width: 100%;
     background-color: #fff;
     color: #242424;
-    font-size: 24px;
-    font-weight: 300;
     padding: 0;
     margin: 0;
 }
 
 .header {
-    position: relative;
     margin: 0 auto;
     max-width: 900px;
-    text-align: right;
-}
-
-header::after {
-    content: '';
-    display:block;
-    clear: both;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
 .title {
-    font-weight: 500;
-    font-size: 1.2em;
-    padding: 8px;
+    font-size: 1.5em;
+    font-weight: 400;
 }
 
 .logo {
     display: block;
-    float: left;
-    width: 233px;
-    height: 48px;
+    width: 200px;
+    height: 41px;
     padding: 0;
-    margin: 0 16px 0 24px;
-    background: url(images/logo.png) no-repeat 0 0;
-    background-size: cover;
+    margin: 0 auto;
+    /*background: url(images/logo.png) no-repeat 0 0;*/
+    /*background-size: cover;*/
 }
 
-.logo span {
-    display: none;
-}
+    .logo span {
+        display: none;
+    }
 
 /* User Instructions */
 
 .instructions {
-
 }
 
-.form-container {
-    background-color: #fefbfb;
-    /*border: 1px solid #dcdcdc;*/
+.instructions-header {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
     position: relative;
 }
 
-    .form-container header {
-        display: block;
-        font-size: 18px;
-        font-weight: 300;
-        color: #242424;
-        padding: 15px 13px;
-        margin: 0;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: rgba(0,0,0,.1);
-        background: rgba(248,248,248,.9);
-        position: relative;
-    }
-
-    .form-container fieldset {
-        display: block;
-        padding: 25px 14px 5px;
-        border: none;
-        background: rgba(255,255,255,.9);
-        position: relative;
-    }
-
-    .form-container section {
-        margin-bottom: 15px;
-        position: relative;
-    }
-
-    .form-container label.title {
-        margin-bottom: 3px;
-        line-height: 19px;
-        font-weight: 600;
-        font-size: 13px;
-        color: #333;
-        text-align: left;
-    }
-
-    .form-container label.input {
-        position: relative;
-        display: block;
-        font-weight: 400;
-        max-width: 100%;
-        font-size: 13px;
-    }
-
-    .form-container i.icon-append {
-        border-color: #bdbdbd;
-        color: #a2a2a2;
-        right: 5px;
-        padding-left: 3px;
-        border-left-width: 1px;
-        border-left-style: solid;
-        position: absolute;
-        top: 5px;
-        width: 22px;
-        height: 22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-    }
-
-    .form-container input.dataEntry {
-        display: block;
-        padding-right: 37px;
-        border-color: #bdbdbd;
-        width: 100%;
-        height: 32px;
-        padding: 5px 10px;
-        outline: 0;
-        border-width: 1px;
-        border-style: solid;
-        border-radius: 0;
-        background: #fff;
-        color: #404040;
-    }
-
-    .form-container .tooltip {
-        position: absolute;
-        bottom: 100%;
-        margin-bottom: 15px;
-        z-index: 99999;
-        left: -9999px;
-        padding: 2px 8px 3px;
-        font-size: 11px;
-        line-height: 16px;
-        font-weight: 400;
-        background: rgba(0,0,0,.9);
-        color: #fff;
-        opacity: 0;
-    }
-
-        .form-container .tooltip::after {
-            top: 100%;
-            right: 11px;
-            border-top: 4px solid rgba(0,0,0,.9);
-            border-right: 4px solid transparent;
-            border-left: 4px solid transparent;
-            content: '';
-            position: absolute;
-            margin: 0;
-            padding: 0;
-        }
-
-    .form-container footer {
-        display: block;
-        padding: 7px 14px 15px;
-        border-top: 1px solid rgba(0,0,0,.1);
-        background: rgba(248,248,248,.9);
-        margin: 0;
-    }
-
-    .form-container .error {
-        color: #8f2626;
-        text-align: center;
-        display: block;
-    }
-
-.input-group {
-    width: 100%;
-    display: table;
+.instructions-content {
+    display: block;
+    padding: 10px 14px 5px;
+    border: none;
+    background: rgba(251,255,251,.9);
+    position: relative;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    font-style: italic;
 }
 
-.input-group-append {
-    width: 1%;
-    vertical-align: middle;
-    display: table-cell;
-    height: 32px;
+/* Password hints */
+#password-test-info {
+    display: inline;
 }
 
-    .input-group-append button {
-        width: 32px;
-        height: 32px;
-    }
+/* Action buttons */
+#action-buttons {
+    text-align: center;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    padding: 5px 0;
+    background: rgba(252,252,252,.9);
+}
+
+/* Further Notes footer */
+.notes {
+    margin-top: 20px;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.notes-header {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
+    position: relative;
+}
+
+.notes-content {
+    display: block;
+    padding: 10px 14px 5px;
+    border: none;
+    background: rgba(255,255,255,.9);
+    position: relative;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    font-style: italic;
+}
+
+/* Form Styles */
+.content h5 {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 300;
+    color: #242424;
+    padding: 6px 8px;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    background: rgba(248,248,248,.9);
+    position: relative;
+    text-align: left;
+}
+
+.form-section {
+    border: 1px solid rgba(0,0,0,.1);
+    border-top: 0;
+    padding-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 4px;
+}
 
 .password-field {
     font-family: Inconsolata, Consolas, Courier New, Courier, monospace;
-    font-size: large;
-    font-weight: bold;
+}
+
+.field-alert {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+@media only screen and (min-width: 600px) {
+
+    .page {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .header {
+        margin-top: 10px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
-    .form-container {
-        width: auto;
-        margin-right: 0;
-        margin-left: 0;
-        border: 0;
-        margin-top: 0;
-        box-shadow: none;
+
+    body {
+        font-size: 12px;
     }
 }
 
 @media only screen and (max-device-width: 480px) {
+
+    body {
+        font-size: 10px;
+    }
+
     .content {
         margin-top: 0;
         width: 100%;
@@ -243,71 +209,5 @@ header::after {
 @media only screen and (max-height: 750px) {
     .content {
         margin-top: 0;
-    }
-}
-
-/* Password rule validator popup */
-#password-helpinfo {
-    background: #dfdfdf none repeat scroll 0 0;
-    color: #fff;
-    left: 20px;
-    position: absolute;
-    top: 115px;
-}
-
-#password-helpinfo h4 {
-    background: black none repeat scroll 0 0;
-    display: block;
-    font-size: 14px;
-    letter-spacing: 0;
-    padding: 17px 0;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-#password-helpinfo ul {
-    list-style: outside none none;
-}
-
-#password-helpinfo ul li {
-    padding: 10px 45px;
-}
-
-
-
-.valid {
-    background: rgba(0, 0, 0, 0) url(images/icon_checkmark.png) no-repeat scroll 2px 6px;
-    color: green;
-    line-height: 21px;
-    padding-left: 22px;
-}
-
-.invalid {
-    background: rgba(0, 0, 0, 0) url(images/icon_error.png) no-repeat scroll 2px 6px;
-    color: red;
-    line-height: 21px;
-    padding-left: 22px;
-}
-
-
-#password-helpinfo::before {
-    background: #dfdfdf none repeat scroll 0 0;
-    content: "";
-    height: 25px;
-    left: -13px;
-    margin-top: -12.5px;
-    position: absolute;
-    top: 50%;
-    transform: rotate(45deg);
-    width: 25px;
-}
-
-#password-helpinfo {
-    display: none;
-}
-
-@media only screen and (max-width: 600px) {
-    #holder-password-helpinfo {
-        display: none;
     }
 }

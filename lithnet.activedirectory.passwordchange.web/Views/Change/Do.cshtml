@@ -38,16 +38,16 @@
             <div class="form-group col-md-6 mr-auto ml-auto">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
                     @{
                         bool usernameError = false;
                         Dictionary<string, object> usernameProps = new Dictionary<string, object>
                                                                 {
                                                                     { "class", "form-control" },
-                                                                    { "placeholder", Resources.UIMessages.UserName },
+                                                                    { "placeholder", Resources.Do.UserName },
                                                                     { "id", "user-name" },
-                                                                    { "aria_label", Resources.UIMessages.UserName },
+                                                                    { "aria_label", Resources.Do.UserName },
                                                                     { "required", true }
                                                                 };
 
@@ -68,7 +68,7 @@
                 @if (usernameError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName, null, new { @id = "usernameValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName, null, new { @id = "usernameValidationText" })
                     </div>
                 }
             </div>
@@ -77,16 +77,16 @@
             <div class="form-group col-md-6 mr-auto ml-auto">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
                     </div>
                     @{
                         bool currPasswordError = false;
                         Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
                                                                         {
                                                                             { "class", "form-control" },
-                                                                            { "placeholder", Resources.UIMessages.CurrentPassword },
+                                                                            { "placeholder", Resources.Do.CurrentPassword },
                                                                             { "id", "current-password" },
-                                                                            { "aria_label", Resources.UIMessages.CurrentPassword },
+                                                                            { "aria_label", Resources.Do.CurrentPassword },
                                                                             { "required", true }
                                                                         };
 
@@ -112,7 +112,7 @@
                 @if (currPasswordError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword, null, new { @id = "currPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword, null, new { @id = "currPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -124,16 +124,16 @@
             <div class="form-group col-md-6 mr-auto ml-auto">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-greater-than"></i></span>
+                        <span class="input-group-text"><i class="fa fa-chevron-right"></i></span>
                     </div>
 
                     @{
                         Dictionary<string, object> newPasswordProps = new Dictionary<string, object>
                                     {
                                         {"class", "form-control"},
-                                        {"placeholder", Resources.UIMessages.NewPassword},
+                                        {"placeholder", Resources.Do.NewPassword},
                                         {"id", "new-password-input"},
-                                        {"aria_label", Resources.UIMessages.NewPassword},
+                                        {"aria_label", Resources.Do.NewPassword},
                                         {"required", true}
                                     };
                     }
@@ -155,7 +155,7 @@
                 @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword, null, new { @id = "newPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword, null, new { @id = "newPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -164,22 +164,22 @@
             <div class="form-group col-md-6 mr-auto ml-auto">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-greater-than"></i></span>
+                        <span class="input-group-text"><i class="fa fa-chevron-right"></i></span>
                     </div>
                     @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
                     {
-                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.ConfirmNewPassword, @aria_label = Resources.UIMessages.ConfirmNewPassword, @aria_invalid = true, @aria_describedBy = "confirmPasswordValidationText" })
+                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.Do.ConfirmNewPassword, @aria_label = Resources.Do.ConfirmNewPassword, @aria_invalid = true, @aria_describedBy = "confirmPasswordValidationText" })
                     }
                     else
                     {
-                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.UIMessages.ConfirmNewPassword, @aria_label = Resources.UIMessages.ConfirmNewPassword })
+                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.Do.ConfirmNewPassword, @aria_label = Resources.Do.ConfirmNewPassword })
                     }
 
                 </div>
                 @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword, null, new { @id = "confirmPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword, null, new { @id = "confirmPasswordValidationText" })
                     </div>
                 }
             </div>
@@ -187,7 +187,7 @@
         @if (Model?.FailureReason != null)
         {
             <div class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
+                <i class="fa fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
             </div>
         }
         @if (Model?.Redirect != null)

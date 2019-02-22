@@ -123,8 +123,14 @@
   <data name="ButtonRequestChange" xml:space="preserve">
     <value>Change Password</value>
   </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
   <data name="CurrentDetails" xml:space="preserve">
     <value>Enter your current login details</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
   </data>
   <data name="HeadingChangePassword" xml:space="preserve">
     <value>Password Change Request</value>
@@ -137,5 +143,11 @@
   </data>
   <data name="NewDetails" xml:space="preserve">
     <value>Select a new password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

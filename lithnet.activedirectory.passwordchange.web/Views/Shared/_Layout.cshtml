@@ -6,18 +6,14 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/bundles/fontawesome")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
 
     <div id="page">
-
-        @RenderSection("Navigation", required: false)
-
         <header>
             <div class="header" role="banner">
-                <a class="logo" href="@HttpContext.Current.Request.ApplicationPath"><span>@ConfigurationManager.AppSettings["app:Brand"]</span></a>
-                <h1 class="title">@ConfigurationManager.AppSettings["app:Title"]</h1>
+                <img class="logo" src="~/Content/images/logo.png" alt="@PasswordChangeConfigSection.Configuration.Branding.CompanyName"/>
+                <h1 class="title">@PasswordChangeConfigSection.Configuration.Branding.AppName</h1>
             </div>
         </header>
 
@@ -31,7 +27,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <!--<script src="@Url.Content("~/Scripts/pwvalidation.js")"></script>-->
     @RenderSection("scripts", required: false)
 </body>
 </html>
