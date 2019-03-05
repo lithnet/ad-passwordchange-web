@@ -144,6 +144,11 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
             return this.View();
         }
 
+        public ActionResult SuccessEnd()
+        {
+            return this.View();
+        }
+
         private async Task ChangePassword(string username, string oldPassword, string newPassword)
         {
             UserPrincipal userPrincipal = await WindowsSamController.GetUserPrincipal(username);
