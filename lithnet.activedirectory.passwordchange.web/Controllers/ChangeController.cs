@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Text;
 using Lithnet.ActiveDirectory.PasswordChange.Web.Exceptions;
 using Lithnet.ActiveDirectory.PasswordChange.Web.Models;
 using NLog;
@@ -27,6 +29,20 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
         {
             try
             {
+                if (ConfigurationManager.AppSettings["logHeaders"] == "true")
+                {
+                    StringBuilder message = new StringBuilder();
+                    message.AppendLine("--------------------");
+                    message.AppendLine($"Request from: {this.Request.UserHostAddress}");
+                    foreach (string key in this.Request.Headers.Keys)
+                    {
+                        message.AppendLine($"{key}: {this.Request.Headers.Get(key)}");
+                    }
+
+                    message.AppendLine("--------------------");
+                    Logger.Trace(message.ToString());
+                }
+
                 this.rateLimiter.ThrowOnRateLimitExceeded(username, this.Request);
 
                 PasswordChangeRequestModel pageModel = new PasswordChangeRequestModel();
