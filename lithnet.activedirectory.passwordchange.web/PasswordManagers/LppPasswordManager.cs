@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices.AccountManagement;
 using System.Threading.Tasks;
 using Lithnet.ActiveDirectory.PasswordProtection;
 using NLog;
@@ -18,7 +19,9 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         {
             try
             {
-                PasswordTestResultCode result = (PasswordTestResultCode)(int)FilterInterface.TestPassword(username, username, password, false);
+                UserPrincipal up = await WindowsSamController.GetUserPrincipal(username);
+
+                PasswordTestResultCode result = (PasswordTestResultCode)(int)FilterInterface.TestPassword(up.SamAccountName, up.DisplayName, password, false);
                 if (result != PasswordTestResultCode.Approved)
                 {
                     Logger.Warn($"User {username} attempted to set a password that was rejected by Lithnet Password Protection with the following code: {result}");

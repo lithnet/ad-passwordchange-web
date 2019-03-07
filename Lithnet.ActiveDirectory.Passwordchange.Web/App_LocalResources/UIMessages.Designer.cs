@@ -63,24 +63,6 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
         /// </summary>
-        public static string Banned {
-            get {
-                return ResourceManager.GetString("Banned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
-        /// </summary>
-        public static string BannedNormalizedPassword {
-            get {
-                return ResourceManager.GetString("BannedNormalizedPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
-        /// </summary>
         public static string BannedNormalizedWord {
             get {
                 return ResourceManager.GetString("BannedNormalizedWord", resourceCulture);
@@ -111,6 +93,24 @@ namespace Resources {
         public static string ComplexityThresholdNotMet {
             get {
                 return ResourceManager.GetString("ComplexityThresholdNotMet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
+        /// </summary>
+        public static string Compromised {
+            get {
+                return ResourceManager.GetString("Compromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
+        /// </summary>
+        public static string CompromisedNormalizedPassword {
+            get {
+                return ResourceManager.GetString("CompromisedNormalizedPassword", resourceCulture);
             }
         }
         
@@ -178,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You existing username or password is incorrect..
+        ///   Looks up a localized string similar to Your existing username or password is incorrect..
         /// </summary>
         public static string InvalidUserOrPassword {
             get {

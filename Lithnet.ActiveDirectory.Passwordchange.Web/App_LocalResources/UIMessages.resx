@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Banned" xml:space="preserve">
+  <data name="Compromised" xml:space="preserve">
     <value>This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have.</value>
   </data>
-  <data name="BannedNormalizedPassword" xml:space="preserve">
+  <data name="CompromisedNormalizedPassword" xml:space="preserve">
     <value>This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have.</value>
   </data>
   <data name="BannedNormalizedWord" xml:space="preserve">
@@ -157,7 +157,7 @@
     <value>Something went wrong. Please contact your service desk for support.</value>
   </data>
   <data name="InvalidUserOrPassword" xml:space="preserve">
-    <value>You existing username or password is incorrect.</value>
+    <value>Your existing username or password is incorrect.</value>
   </data>
   <data name="LengthRequirementsNotMet" xml:space="preserve">
     <value>Your password is not long enough.</value>
