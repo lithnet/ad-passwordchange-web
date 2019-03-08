@@ -150,4 +150,7 @@
   <data name="UserName" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="UserNameOrEmail" xml:space="preserve">
+    <value>Email address or username</value>
+  </data>
 </root>

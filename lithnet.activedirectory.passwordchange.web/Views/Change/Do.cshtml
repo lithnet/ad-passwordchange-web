@@ -45,9 +45,9 @@
                         Dictionary<string, object> usernameProps = new Dictionary<string, object>
                                                                 {
                                                                     { "class", "form-control" },
-                                                                    { "placeholder", Resources.Do.UserName },
+                                                                    { "placeholder", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail },
                                                                     { "id", "user-name" },
-                                                                    { "aria_label", Resources.Do.UserName },
+                                                                    { "aria_label", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail},
                                                                     { "required", true }
                                                                 };
 

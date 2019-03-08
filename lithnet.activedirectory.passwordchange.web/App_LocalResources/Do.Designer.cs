@@ -158,5 +158,14 @@ namespace Resources {
                 return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address or username.
+        /// </summary>
+        public static string UserNameOrEmail {
+            get {
+                return ResourceManager.GetString("UserNameOrEmail", resourceCulture);
+            }
+        }
     }
 }
