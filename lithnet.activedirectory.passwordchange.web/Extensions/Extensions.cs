@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Lithnet.ActiveDirectory.PasswordChange.Web
 {
@@ -19,6 +20,18 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
             }
 
             return sb.ToString();
+        }
+
+        public static void AddOrReplace(this Dictionary<string, object> d, string key, object value)
+        {
+            if (d.ContainsKey(key))
+            {
+                d[key] = value;
+            }
+            else
+            {
+                d.Add(key, value);
+            }
         }
     }
 }

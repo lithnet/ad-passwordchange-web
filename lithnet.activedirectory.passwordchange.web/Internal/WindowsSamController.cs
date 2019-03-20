@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -17,7 +18,14 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
         /// <returns>User Principal data structure if found</returns>
         public static async Task<UserPrincipal> GetUserPrincipal(string userOrEmail)
         {
-            using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
+            ContextOptions options = ContextOptions.Negotiate | ContextOptions.Sealing | ContextOptions.Signing;
+
+            if (ConfigurationManager.AppSettings["ad-bind-force-ssl"] == "1")
+            {
+                options = ContextOptions.Negotiate | ContextOptions.SecureSocketLayer;
+            }
+
+            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, null, null, options))
             {
                 // Try to retrieve the user principal data from the security account manager
                 UserPrincipal userItem = null;
@@ -98,7 +106,8 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web
                 {
                     throw new PasswordIncorrectException(ex.Message);
                 }
-                else if (inner.ErrorCode == (unchecked((int)0x800708C5)))
+                else if (inner.ErrorCode == (unchecked((int)0x800708C5)) || 
+                         inner.ErrorCode == (unchecked((int)0x8007202F)))
                 {
                     throw new PasswordDoesNotMeetPolicyException(ex.Message);
                 }

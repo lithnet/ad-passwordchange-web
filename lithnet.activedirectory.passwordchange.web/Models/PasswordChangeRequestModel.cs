@@ -23,8 +23,6 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Models
         [Required(ErrorMessageResourceType = typeof(UIMessages), ErrorMessageResourceName = "ConfirmPasswordIsRequired")]
         public string ConfirmNewPassword { get; set; }
 
-        public string FailureReason { get; set; }
-
         public bool Success { get; set; }
 
         public string Redirect { get; set; }

@@ -124,7 +124,7 @@
     <value>This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have.</value>
   </data>
   <data name="BannedNormalizedWord" xml:space="preserve">
-    <value>This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have.</value>
+    <value>Your password contains a word, phrase, or pattern that makes your password easily guessable. Please try again with a different password.</value>
   </data>
   <data name="ChangeSuccessful" xml:space="preserve">
     <value>Your password has been updated successfully.</value>

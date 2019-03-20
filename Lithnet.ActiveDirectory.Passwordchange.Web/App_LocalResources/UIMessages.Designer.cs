@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This password has been found in a data breach and could be used to hack your account. It is not safe to use here or on any other accounts you may have..
+        ///   Looks up a localized string similar to Your password contains a word, phrase, or pattern that makes your password easily guessable. Please try again with a different password..
         /// </summary>
         public static string BannedNormalizedWord {
             get {

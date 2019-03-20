@@ -30,6 +30,103 @@
     }
 }
 
+@{
+    Dictionary<string, object> usernameProps = new Dictionary<string, object>
+{
+{"class", "form-control"},
+{"placeholder", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail},
+{"id", "user-name"},
+{"aria_label", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail},
+{"required", true},
+};
+
+    Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
+{
+{ "class", "form-control" },
+{ "placeholder", Resources.Do.CurrentPassword },
+{ "id", "current-password" },
+{ "aria_label", Resources.Do.CurrentPassword },
+{ "required", true }
+};
+
+    Dictionary<string, object> newPasswordProps = new Dictionary<string, object>
+{
+{"class", "form-control"},
+{"placeholder", Resources.Do.NewPassword},
+{"id", "new-password-input"},
+{"aria_label", Resources.Do.NewPassword},
+{"required", true}
+};
+
+    Dictionary<string, object> confimNewPasswordProps = new Dictionary<string, object>
+{
+{"class", "form-control"},
+{"placeholder", Resources.Do.ConfirmNewPassword},
+{"id", "confirm-new-password-input"},
+{"aria_label", Resources.Do.ConfirmNewPassword},
+{"required", true}
+};
+
+    // Username
+
+    bool usernameError = ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any();
+
+    if (usernameError)
+    {
+        usernameProps.AddOrReplace("aria_invalid", true);
+        usernameProps.AddOrReplace("aria_describedby", "usernameErrorDescription");
+        usernameProps.AddOrReplace("autofocus", true);
+    }
+
+    if (string.IsNullOrEmpty(Model?.UserName))
+    {
+        usernameProps.AddOrReplace("autofocus", true);
+    }
+
+    // Current password
+
+    bool currPasswordError = ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any();
+
+    if (currPasswordError)
+    {
+        currPasswordProps.AddOrReplace("aria_invalid", true);
+        currPasswordProps.AddOrReplace("aria_describedby", "currentPasswordErrorDescription");
+
+        currPasswordProps.AddOrReplace("autofocus", true);
+    }
+
+    if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
+    {
+        currPasswordProps.AddOrReplace("value", Model.CurrentPassword);
+    }
+    else if (string.IsNullOrEmpty(Model?.CurrentPassword))
+    {
+        currPasswordProps.AddOrReplace("autofocus", true);
+    }
+
+    // New password
+
+    bool newPasswordError = ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any();
+
+    if (newPasswordError)
+    {
+        newPasswordProps.AddOrReplace("aria_describedby", "newPasswordErrorDescription");
+        newPasswordProps.AddOrReplace("aria_invalid", true);
+        newPasswordProps.AddOrReplace("autofocus", true);
+    }
+
+    // Confirm new password
+
+    bool confirmPasswordError = ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any();
+
+    if (confirmPasswordError)
+    {
+        confimNewPasswordProps.AddOrReplace("aria_invalid", true);
+        confimNewPasswordProps.AddOrReplace("aria_describedby", "confirmNewPasswordErrorDescription");
+        newPasswordProps.AddOrReplace("autofocus", true);
+    }
+}
+
 @using (Html.BeginForm("Do", "Change", FormMethod.Post))
 {
     <h5>@Resources.Do.CurrentDetails</h5>
@@ -40,35 +137,13 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
-                    @{
-                        bool usernameError = false;
-                        Dictionary<string, object> usernameProps = new Dictionary<string, object>
-                                                                {
-                                                                    { "class", "form-control" },
-                                                                    { "placeholder", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail },
-                                                                    { "id", "user-name" },
-                                                                    { "aria_label", ConfigurationManager.AppSettings["username-only"] == "true" ? Resources.Do.UserName : Resources.Do.UserNameOrEmail},
-                                                                    { "required", true }
-                                                                };
 
-                        if (ViewData.ModelState[nameof(Model.UserName)] != null && ViewData.ModelState[nameof(Model.UserName)].Errors.Any())
-                        {
-                            usernameError = true;
-                            usernameProps.Add("aria_invalid", true);
-                            usernameProps.Add("aria_describedBy", "usernameValidationText");
-                        }
-
-                        if (string.IsNullOrEmpty(Model?.UserName))
-                        {
-                            usernameProps.Add("autofocus", true);
-                        }
-                    }
                     @Html.TextBoxFor(model => model.UserName, usernameProps)
                 </div>
                 @if (usernameError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName, null, new { @id = "usernameValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.UserName, null, new { @id = "usernameErrorDescription" })
                     </div>
                 }
             </div>
@@ -79,40 +154,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-lock"></i></span>
                     </div>
-                    @{
-                        bool currPasswordError = false;
-                        Dictionary<string, object> currPasswordProps = new Dictionary<string, object>
-                                                                        {
-                                                                            { "class", "form-control" },
-                                                                            { "placeholder", Resources.Do.CurrentPassword },
-                                                                            { "id", "current-password" },
-                                                                            { "aria_label", Resources.Do.CurrentPassword },
-                                                                            { "required", true }
-                                                                        };
 
-                        if (ViewData.ModelState[nameof(Model.CurrentPassword)] != null && ViewData.ModelState[nameof(Model.CurrentPassword)].Errors.Any())
-                        {
-                            currPasswordError = true;
-                            currPasswordProps.Add("aria_invalid", true);
-                            currPasswordProps.Add("aria_describedBy", "currPasswordValidationText");
-                        }
-
-                        if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
-                        {
-                            currPasswordProps.Add("value", Model.CurrentPassword);
-                        }
-                        else if (string.IsNullOrEmpty(Model?.CurrentPassword))
-                        {
-                            currPasswordProps.Add("autofocus", true);
-                        }
-
-                    }
                     @Html.PasswordFor(model => model.CurrentPassword, currPasswordProps)
                 </div>
+
                 @if (currPasswordError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword, null, new { @id = "currPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.CurrentPassword, null, new { @id = "currentPasswordErrorDescription" })
                     </div>
                 }
             </div>
@@ -126,36 +175,13 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-chevron-right"></i></span>
                     </div>
-
-                    @{
-                        Dictionary<string, object> newPasswordProps = new Dictionary<string, object>
-                                    {
-                                        {"class", "form-control"},
-                                        {"placeholder", Resources.Do.NewPassword},
-                                        {"id", "new-password-input"},
-                                        {"aria_label", Resources.Do.NewPassword},
-                                        {"required", true}
-                                    };
-                    }
-
-                    @if (!string.IsNullOrEmpty(Model?.UserName) && !string.IsNullOrEmpty(Model?.CurrentPassword))
-                    {
-                        newPasswordProps.Add("autofocus", true);
-                    }
-
-                    @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
-                    {
-                        newPasswordProps.Add("aria_invalid", true);
-                        newPasswordProps.Add("aria_describedBy", "newPasswordValidationText");
-                    }
-
                     @Html.PasswordFor(model => model.NewPassword, newPasswordProps)
-
                 </div>
-                @if (ViewData.ModelState[nameof(Model.NewPassword)] != null && ViewData.ModelState[nameof(Model.NewPassword)].Errors.Any())
+
+                @if (newPasswordError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword, null, new { @id = "newPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.NewPassword, null, new { @id = "newPassowrdErrorDescription" })
                     </div>
                 }
             </div>
@@ -166,34 +192,23 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-chevron-right"></i></span>
                     </div>
-                    @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
-                    {
-                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.Do.ConfirmNewPassword, @aria_label = Resources.Do.ConfirmNewPassword, @aria_invalid = true, @aria_describedBy = "confirmPasswordValidationText" })
-                    }
-                    else
-                    {
-                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control", @placeholder = Resources.Do.ConfirmNewPassword, @aria_label = Resources.Do.ConfirmNewPassword })
-                    }
 
+                    @Html.PasswordFor(model => model.ConfirmNewPassword, confimNewPasswordProps)
                 </div>
-                @if (ViewData.ModelState[nameof(Model.ConfirmNewPassword)] != null && ViewData.ModelState[nameof(Model.ConfirmNewPassword)].Errors.Any())
+
+                @if (confirmPasswordError)
                 {
                     <div class="alert alert-danger field-alert" role="alert">
-                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword, null, new { @id = "confirmPasswordValidationText" })
+                        <i class="fa fa-exclamation-circle"></i> @Html.ValidationMessageFor(model => model.ConfirmNewPassword, null, new { @id = "confirmNewPasswordErrorDescription" })
                     </div>
                 }
             </div>
+
+            @if (Model?.Redirect != null)
+            {
+                @Html.HiddenFor(model => model.Redirect)
+            }
         </div>
-        @if (Model?.FailureReason != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                <i class="fa fa-exclamation-circle"></i> @Html.DisplayTextFor(model => model.FailureReason)
-            </div>
-        }
-        @if (Model?.Redirect != null)
-        {
-            @Html.HiddenFor(model => model.Redirect)
-        }
     </div>
 
     <footer>
@@ -213,3 +228,6 @@
     </footer>
 }
 
+@section scripts {
+    <script src="~/Scripts/do.js"></script>
+}

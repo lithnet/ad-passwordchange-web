@@ -95,7 +95,7 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
 
                 if (model.NewPassword != model.ConfirmNewPassword)
                 {
-                    model.FailureReason = Resources.UIMessages.PasswordsDoNotMatch;
+                    this.ModelState.AddModelError(nameof(model.ConfirmNewPassword), Resources.UIMessages.PasswordsDoNotMatch);
                     return this.View(model);
                 }
 
@@ -103,7 +103,7 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
 
                 if (result.Code != PasswordTestResultCode.Approved)
                 {
-                    model.FailureReason = result.ToString();
+                    this.ModelState.AddModelError(nameof(model.ConfirmNewPassword), result.ToString());
                     return this.View(model);
                 }
 
@@ -127,19 +127,19 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
             catch (NotFoundException)
             {
                 Logger.Error($"The password change attempt for user {model.UserName} failed because the user was not found in the directory");
-                model.FailureReason = Resources.UIMessages.InvalidUserOrPassword;
+                this.ModelState.AddModelError(nameof(model.CurrentPassword), Resources.UIMessages.InvalidUserOrPassword);
                 return this.View(model);
             }
             catch (PasswordIncorrectException)
             {
                 Logger.Error($"The password change attempt for user {model.UserName} failed because the current password was incorrect");
-                model.FailureReason = Resources.UIMessages.InvalidUserOrPassword;
+                this.ModelState.AddModelError(nameof(model.CurrentPassword), Resources.UIMessages.InvalidUserOrPassword);
                 return this.View(model);
             }
             catch (PasswordDoesNotMeetPolicyException)
             {
                 Logger.Error($"The password change attempt for user {model.UserName} failed because AD rejected the password change");
-                model.FailureReason = Resources.UIMessages.PasswordRejectedByAdPolicy;
+                this.ModelState.AddModelError(nameof(model.ConfirmNewPassword), Resources.UIMessages.PasswordRejectedByAdPolicy);
                 return this.View(model);
             }
             catch (RateLimitExceededException ex)
@@ -150,7 +150,7 @@ namespace Lithnet.ActiveDirectory.PasswordChange.Web.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "An unhandled exception occurred when attempting the password change");
-                model.FailureReason = Resources.UIMessages.UnhandledError;
+                this.ModelState.AddModelError(nameof(model.ConfirmNewPassword), Resources.UIMessages.UnhandledError);
                 return this.View(model);
             }
         }
